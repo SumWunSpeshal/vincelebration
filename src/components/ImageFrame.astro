@@ -1,22 +1,40 @@
 ---
 interface Props {
   wide?: boolean;
+  href: string;
 }
 
-const { wide = false } = Astro.props;
+const { wide = false, href } = Astro.props;
+
+interface Props {
+  href: string;
+}
 ---
 
-<div class:list={["frame", wide && "wide"]}>
+<a href={href} class:list={["frame", wide && "wide"]}>
   <slot />
-</div>
+</a>
 
 <style>
   .frame {
+    position: relative;
     aspect-ratio: 1;
     border: 0.375rem solid transparent;
-    border-radius: 0.75rem;
-    overflow: hidden;
     object-fit: cover;
+
+    &:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: #000;
+      opacity: 0;
+      border-radius: 0.75rem;
+      transition: opacity 0.15s ease-in-out;
+    }
+
+    &:hover:after {
+      opacity: 0.1;
+    }
   }
 
   :global(.frame img) {
@@ -25,6 +43,10 @@ const { wide = false } = Astro.props;
     aspect-ratio: auto !important;
     width: 100%;
     height: 100%;
+    border-radius: 0.75rem;
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
 
   @media (width >= 600px) {

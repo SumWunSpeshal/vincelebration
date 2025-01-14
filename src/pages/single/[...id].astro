@@ -1,0 +1,30 @@
+---
+import { CldImage } from "astro-cloudinary";
+import Layout from "../../layouts/Layout.astro";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+const width = Astro.url.searchParams.get("width");
+const height = Astro.url.searchParams.get("height");
+const alt = Astro.url.searchParams.get("alt");
+---
+
+<Layout title="Chez Superdad">
+  <main>
+    {
+      id && width && height && alt ? (
+        <CldImage
+          src={id}
+          width={+width}
+          height={+height}
+          alt={alt}
+          sizes="100vw"
+          transition:name={id}
+        />
+      ) : (
+        <div>Some param broken</div>
+      )
+    }
+  </main>
+</Layout>
