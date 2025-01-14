@@ -1,15 +1,60 @@
 ---
+import { v2 as cloudinary } from "cloudinary";
 import { CldImage, CldUploadWidget } from "astro-cloudinary";
-import { getCollection } from "astro:content";
 import ImageFrame from "../components/ImageFrame.astro";
 import ImageGrid from "../components/ImageGrid.astro";
 import ImageLink from "../components/ImageLink.astro";
 import Layout from "../layouts/Layout.astro";
 
+type CloudinaryResponse = {
+  total_count: number;
+  time: number;
+  rate_limit_allowed: number;
+  rate_limit_reset_at: string; // iso string
+  rate_limit_remaining: number;
+  resources: Array<{
+    asset_id: string;
+    public_id: string;
+    asset_folder: string;
+    filename: string;
+    display_name: string;
+    format: string;
+    version: number;
+    resource_type: string;
+    type: string;
+    created_at: string; // iso string
+    uploaded_at: string; // iso string
+    bytes: number;
+    backup_bytes: number;
+    width: number;
+    height: number;
+    aspect_ratio: number;
+    pixels: number;
+    context: object; // ?
+    url: string;
+    secure_url: string;
+    status: string;
+    access_mode: string;
+    access_control: null; // ?
+    etag: string;
+    created_by: null; // ?
+    uploaded_by: null; // ?
+  }>;
+};
+
 export const prerender = false;
 
-const assets = await getCollection("cloudinaryImages");
-console.log("assets:", assets.length);
+cloudinary.config({
+  cloud_name: import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: import.meta.env.PUBLIC_CLOUDINARY_API_KEY,
+  api_secret: import.meta.env.CLOUDINARY_API_SECRET,
+});
+
+const assets: CloudinaryResponse = await cloudinary.search
+  .expression("resource_type:image")
+  .with_field("context")
+  .max_results(100)
+  .execute();
 ---
 
 <Layout title="Chez Superdad">
@@ -37,14 +82,14 @@ console.log("assets:", assets.length);
 
     <ImageGrid>
       {
-        assets.map(({ data }) => (
-          <ImageFrame wide={data.width / data.height > 1.6}>
+        assets.resources.map(({ width, height, public_id, display_name }) => (
+          <ImageFrame wide={width / height > 1.6}>
             <ImageLink href="#">
               <CldImage
-                src={data.public_id}
-                width={data.width}
-                height={data.height}
-                alt={data.display_name}
+                src={public_id}
+                width={width}
+                height={height}
+                alt={display_name}
                 sizes="100vw"
               />
             </ImageLink>

@@ -3,7 +3,6 @@ import { defineCollection } from "astro:content";
 
 const cloudinaryImages = defineCollection({
   loader: cldAssetsLoader({
-    metadata: true,
     limit: 100,
   }),
 });
