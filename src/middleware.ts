@@ -19,12 +19,10 @@ export const onRequest = defineMiddleware((context, next) => {
     }
   }
 
-  return next();
-
-  // return new Response("Auth required", {
-  //   status: 401,
-  //   headers: {
-  //     "WWW-authenticate": 'Basic realm="Secure Area"',
-  //   },
-  // });
+  return new Response("Auth required", {
+    status: 401,
+    headers: {
+      "WWW-authenticate": 'Basic realm="Secure Area"',
+    },
+  });
 });
