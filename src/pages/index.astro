@@ -1,71 +1,93 @@
 ---
-import Layout from '../layouts/Layout.astro'
+import { CldImage, CldUploadWidget } from "astro-cloudinary";
+import { getCollection } from "astro:content";
+import ImageFrame from "../components/ImageFrame.astro";
+import ImageGrid from "../components/ImageGrid.astro";
+import ImageLink from "../components/ImageLink.astro";
+import Layout from "../layouts/Layout.astro";
 
 export const prerender = false;
+
+const assets = await getCollection("cloudinaryImages");
+console.log("assets:", assets.length);
 ---
 
 <Layout title="Chez Superdad">
-	<main>
-		<h1>Chez <span class="text-gradient">Superdad</span></h1>
-	</main>
+  <main>
+    <h1>Chez <span class="text-gradient">Superdad</span></h1>
+
+    <CldUploadWidget
+      uploadPreset="vincelebration-user-upload"
+      id="upload-events"
+    >
+      <button>Upload</button>
+    </CldUploadWidget>
+
+    <script>
+      const widget = document.querySelector("#upload-events");
+
+      if (widget) {
+        widget.addEventListener("clduploadwidget:success", ((
+          e: CustomEvent<{ detail: object }>
+        ) => {
+          console.log("clduploadwidget:success", e.detail);
+        }) as EventListener);
+      }
+    </script>
+
+    <ImageGrid>
+      {
+        assets.map(({ data }) => (
+          <ImageFrame wide={data.width / data.height > 1.6}>
+            <ImageLink href="#">
+              <CldImage
+                src={data.public_id}
+                width={data.width}
+                height={data.height}
+                alt={data.display_name}
+                sizes="100vw"
+              />
+            </ImageLink>
+          </ImageFrame>
+        ))
+      }
+    </ImageGrid>
+  </main>
 </Layout>
 
 <style>
-	:root {
-		--astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
-	}
- 
-	h1 {
-		margin: 2rem 0;
-	}
+  :root {
+    --astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
+  }
 
-	main {
-		margin: auto;
-		padding: 1em;
-		max-width: 60ch;
-	}
+  h1 {
+    margin: 2rem 0;
+  }
 
-	.text-gradient {
-		font-weight: 900;
-		background-image: var(--astro-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 100% 200%;
-		background-position-y: 100%;
-		border-radius: 0.4rem;
-		animation: pulse 4s ease-in-out infinite;
-	}
+  main {
+    margin: auto;
+    padding: 1em;
+    max-width: 80ch;
+  }
 
-	@keyframes pulse {
-		0%,
-		100% {
-			background-position-y: 0%;
-		}
-		50% {
-			background-position-y: 80%;
-		}
-	}
+  .text-gradient {
+    font-weight: 900;
+    background-image: var(--astro-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 100% 200%;
+    background-position-y: 100%;
+    border-radius: 0.4rem;
+    animation: pulse 4s ease-in-out infinite;
+  }
 
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		background: #4f39fa;
-		padding: 1rem;
-		border-radius: 0.4rem;
-		color: var(--color-bg);
-	}
-
-	.instructions code {
-		font-size: 0.875em;
-		border: 0.1em solid var(--color-border);
-		border-radius: 4px;
-		padding: 0.15em 0.25em;
-	}
-
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
-		padding: 0;
-	}
+  @keyframes pulse {
+    0%,
+    100% {
+      background-position-y: 0%;
+    }
+    50% {
+      background-position-y: 80%;
+    }
+  }
 </style>
