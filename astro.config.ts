@@ -1,3 +1,4 @@
+import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
 import { defineConfig } from "astro/config";
 
@@ -9,4 +10,5 @@ export default defineConfig({
       enabled: true,
     },
   }),
+  integrations: [tailwind()],
 });

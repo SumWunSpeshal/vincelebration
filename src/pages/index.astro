@@ -4,6 +4,8 @@ import ImageFrame from "../components/ImageFrame.astro";
 import ImageGrid from "../components/ImageGrid.astro";
 import Layout from "../layouts/Layout.astro";
 import { cloudinary, type CloudinaryResponse } from "../clients/cloudinary";
+import Container from "../components/Container.astro";
+import Intro from "../components/Intro.astro";
 
 export const prerender = false;
 
@@ -16,46 +18,49 @@ const assets: CloudinaryResponse = await cloudinary.search
 
 <Layout title="Chez Superdad">
   <main>
-    <h1>Chez <span class="text-gradient">Superdad</span></h1>
+    <Intro />
+    <Container>
+      <h1>Chez <span class="text-gradient">Superdad</span></h1>
 
-    <CldUploadWidget
-      uploadPreset="vincelebration-user-upload"
-      id="upload-events"
-    >
-      <button>Upload</button>
-    </CldUploadWidget>
+      <CldUploadWidget
+        uploadPreset="vincelebration-user-upload"
+        id="upload-events"
+      >
+        <button>Upload</button>
+      </CldUploadWidget>
 
-    <script>
-      const widget = document.querySelector("#upload-events");
+      <script>
+        const widget = document.querySelector("#upload-events");
 
-      if (widget) {
-        widget.addEventListener("clduploadwidget:success", ((
-          e: CustomEvent<{ detail: object }>
-        ) => {
-          console.log("clduploadwidget:success", e.detail);
-        }) as EventListener);
-      }
-    </script>
+        if (widget) {
+          widget.addEventListener("clduploadwidget:success", ((
+            e: CustomEvent<{ detail: object }>
+          ) => {
+            console.log("clduploadwidget:success", e.detail);
+          }) as EventListener);
+        }
+      </script>
 
-    <ImageGrid>
-      {
-        assets.resources.map(({ width, height, public_id, display_name }) => (
-          <ImageFrame
-            wide={width / height > 1.6}
-            href={`/single/${public_id}?width=${width}&height=${height}&alt=${display_name}`}
-          >
-            <CldImage
-              src={public_id}
-              width={width}
-              height={height}
-              alt={display_name}
-              sizes="100vw"
-              transition:name={public_id}
-            />
-          </ImageFrame>
-        ))
-      }
-    </ImageGrid>
+      <ImageGrid>
+        {
+          assets.resources.map(({ width, height, public_id, display_name }) => (
+            <ImageFrame
+              wide={width / height > 1.6}
+              href={`/single/${public_id}?width=${width}&height=${height}&alt=${display_name}`}
+            >
+              <CldImage
+                src={public_id}
+                width={width}
+                height={height}
+                alt={display_name}
+                sizes="100vw"
+                transition:name={public_id}
+              />
+            </ImageFrame>
+          ))
+        }
+      </ImageGrid>
+    </Container>
   </main>
 </Layout>
 
@@ -66,12 +71,6 @@ const assets: CloudinaryResponse = await cloudinary.search
 
   h1 {
     margin: 2rem 0;
-  }
-
-  main {
-    margin: auto;
-    padding: 1em;
-    max-width: 80ch;
   }
 
   .text-gradient {
