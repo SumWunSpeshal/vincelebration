@@ -1,0 +1,13 @@
+---
+import { Image } from "astro:assets";
+---
+
+<nav class="h-28 flex items-center px-8 justify-between">
+  <a class="block size-20 [&>img]:block" href="/">
+    <Image src="/favicon-96x96.png" alt="Astro Logo" width={96} height={96} />
+  </a>
+  <ul class="flex gap-4">
+    <li>Item #1</li>
+    <li>Item #2</li>
+  </ul>
+</nav>
