@@ -1,6 +1,6 @@
 import { cloudinary, type CloudinaryResponse } from "./cloudinary";
 
-const cache: {
+export const cache: {
   imgs: CloudinaryResponse | null;
 } = {
   imgs: null,
