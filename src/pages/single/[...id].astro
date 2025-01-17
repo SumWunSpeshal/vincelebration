@@ -1,40 +1,25 @@
 ---
 import { CldImage } from "astro-cloudinary";
-import { cloudinary } from "../../clients/cloudinary";
+import { getImages } from "../../clients/cached-requests";
 import Layout from "../../layouts/Layout.astro";
 
 export const prerender = false;
 
 const { id } = Astro.params;
-const width = Astro.url.searchParams.get("width");
-const height = Astro.url.searchParams.get("height");
-const alt = Astro.url.searchParams.get("alt");
 
-if (id) {
-  const res = await cloudinary.search
-    .expression(`public_id:${id}`)
-    .max_results(1)
-    .execute();
-  console.log("res:", res);
-
-  const next = await cloudinary.search
-    .expression(`resource_type:image`)
-    .max_results(1)
-    .next_cursor(res.next_cursor)
-    .execute();
-  console.log("next:", next);
-}
+const assets = await getImages();
+const item = assets.resources.find((el) => el.public_id === id);
 ---
 
 <Layout title="Chez Superdad">
   <main>
     {
-      id && width && height && alt ? (
+      id && item ? (
         <CldImage
           src={id}
-          width={+width}
-          height={+height}
-          alt={alt}
+          width={+item.width}
+          height={+item.height}
+          alt={item.display_name}
           sizes="100vw"
           transition:name={id}
         />

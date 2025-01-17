@@ -3,17 +3,13 @@ import { CldImage, CldUploadWidget } from "astro-cloudinary";
 import ImageFrame from "../components/ImageFrame.astro";
 import ImageGrid from "../components/ImageGrid.astro";
 import Layout from "../layouts/Layout.astro";
-import { cloudinary, type CloudinaryResponse } from "../clients/cloudinary";
 import Container from "../components/Container.astro";
 import Intro from "../components/Intro.astro";
+import { getImages } from "../clients/cached-requests";
 
 export const prerender = false;
 
-const assets: CloudinaryResponse = await cloudinary.search
-  .expression("resource_type:image")
-  .with_field("context")
-  .max_results(100)
-  .execute();
+const assets = await getImages();
 ---
 
 <Layout title="Chez Superdad">
@@ -46,7 +42,7 @@ const assets: CloudinaryResponse = await cloudinary.search
           assets.resources.map(({ width, height, public_id, display_name }) => (
             <ImageFrame
               wide={width / height > 1.6}
-              href={`/single/${public_id}?width=${width}&height=${height}&alt=${display_name}`}
+              href={`/single/${public_id}`}
             >
               <CldImage
                 src={public_id}
