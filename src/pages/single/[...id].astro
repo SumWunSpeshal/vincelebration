@@ -8,10 +8,19 @@ export const prerender = false;
 const { id } = Astro.params;
 
 const assets = await getImages();
-const item = assets.resources.find((el) => el.public_id === id);
+const currIndex = assets.resources.findIndex((el) => el.public_id === id);
+const item = assets.resources[currIndex];
+const prev = assets.resources[currIndex - 1] ?? assets.resources.at(-1);
+const next = assets.resources[currIndex + 1] ?? assets.resources.at(0);
 ---
 
 <Layout title="Chez Superdad">
+  <div>
+    <a href={`/single/${prev?.public_id}`}>Prev</a>
+  </div>
+  <div>
+    <a href={`/single/${next?.public_id}`}>Next</a>
+  </div>
   <main>
     {
       id && item ? (
