@@ -70,7 +70,6 @@ export function CommentForm() {
             </FormItem>
           )}
         />
-        <pre>{form.formState.isValid ? "true" : "false"}</pre>
         <div className="flex justify-end">
           <Button type="submit" disabled={!form.formState.isValid}>
             Publier
