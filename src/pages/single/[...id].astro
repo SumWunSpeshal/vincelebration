@@ -10,31 +10,75 @@ const { id } = Astro.params;
 const assets = await getImages();
 const currIndex = assets.resources.findIndex((el) => el.public_id === id);
 const item = assets.resources[currIndex];
-const prev = assets.resources[currIndex - 1] ?? assets.resources.at(-1);
-const next = assets.resources[currIndex + 1] ?? assets.resources.at(0);
+const prev = assets.resources[currIndex - 1];
+const next = assets.resources[currIndex + 1];
 ---
 
 <Layout title="Chez Superdad">
-  <div>
-    <a href={`/single/${prev?.public_id}`}>Prev</a>
-  </div>
-  <div>
-    <a href={`/single/${next?.public_id}`}>Next</a>
-  </div>
   <main>
     {
       id && item ? (
-        <CldImage
-          src={id}
-          width={+item.width}
-          height={+item.height}
-          alt={item.display_name}
-          sizes="100vw"
-          transition:name={id}
-        />
+        <div class="px-4 lg:px-8 bg-zinc-900 flex items-center justify-center h-[75dvh] relative">
+          {prev && (
+            <a
+              class="prev | absolute z-10 top-1/2 -translate-y-1/2 left-8 lg:left-2"
+              href={`/single/${prev.public_id}`}
+              transition:name={id + "prev"}
+            >
+              <div class="rounded-full size-12 bg-white/60" />
+              <span class="sr-only">Prev</span>
+            </a>
+          )}
+
+          <CldImage
+            src={id}
+            width={+item.width}
+            height={+item.height}
+            alt={item.display_name}
+            sizes="100vw"
+            transition:name={id}
+            class="!object-contain !max-h-full !max-w-full object-center !size-auto pointer-events-none"
+          />
+
+          {next && (
+            <a
+              class="next | absolute top-1/2 -translate-y-1/2 right-8 lg:right-2"
+              href={`/single/${next.public_id}`}
+              transition:name={id + "next"}
+            >
+              <div class="rounded-full size-12 bg-white/60 z-10" />
+              <span class="sr-only">Next</span>
+            </a>
+          )}
+
+          <small
+            class="absolute text-black left-1/2 -translate-x-1/2 bottom-3 text-sm bg-white/60 rounded-md px-2 py-0.5 font-medium"
+            transition:name={id + "count"}
+          >
+            {currIndex + 1} / {assets.resources.length}
+          </small>
+        </div>
       ) : (
         <div>Some param broken</div>
       )
     }
   </main>
 </Layout>
+
+<style>
+  .prev {
+    mask:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 4L6 12L16 20Z' fill='black'/%3E%3C/svg%3E")
+        2px center/38px no-repeat,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  .next {
+    mask:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 4L18 12L8 20Z' fill='black'/%3E%3C/svg%3E")
+        6px center/38px no-repeat,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+</style>
