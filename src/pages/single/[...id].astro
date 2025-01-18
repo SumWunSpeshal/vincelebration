@@ -1,4 +1,6 @@
 ---
+import Container from "@/components/Container.astro";
+import { Separator } from "@/components/ui/separator";
 import { CldImage } from "astro-cloudinary";
 import { Comment, db, eq } from "astro:db";
 import { getImages } from "../../clients/cached-requests";
@@ -18,8 +20,8 @@ const prev = assets.resources[currIndex - 1];
 const next = assets.resources[currIndex + 1];
 ---
 
-<Layout title="Chez Superdad">
-  <main>
+<Layout title={item.display_name}>
+  <main class="space-y-16">
     {
       id && item ? (
         <div class="px-4 lg:px-8 bg-zinc-900 flex items-center justify-center h-[75dvh] relative">
@@ -66,6 +68,33 @@ const next = assets.resources[currIndex + 1];
         <div>Some param broken</div>
       )
     }
+
+    <div class="pb-16">
+      <Container>
+        <div class="space-y-8">
+          <h2 class="text-4xl font-medium">Commentaires</h2>
+          <div class="space-y-4">
+            {
+              comments.map((el, i) => (
+                <Fragment>
+                  {i !== 0 && <Separator />}
+                  <div class="space-y-2">
+                    <div>
+                      <span class="font-medium text-lg">{el.author}</span>
+                      &nbsp;
+                      <small class="text-slate-700">
+                        {new Intl.DateTimeFormat("fr-FR").format(el.published)}
+                      </small>
+                    </div>
+                    <div>{el.content}</div>
+                  </div>
+                </Fragment>
+              ))
+            }
+          </div>
+        </div>
+      </Container>
+    </div>
   </main>
 </Layout>
 

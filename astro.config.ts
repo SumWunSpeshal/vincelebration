@@ -14,5 +14,5 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  integrations: [tailwind(), react(), db()],
+  integrations: [tailwind({ applyBaseStyles: false }), react(), db()],
 });
