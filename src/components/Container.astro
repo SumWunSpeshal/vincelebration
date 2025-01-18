@@ -6,18 +6,6 @@ interface Props {
 const { wide = false } = Astro.props;
 ---
 
-<div class:list={["container", wide && "wide"]}>
+<div class:list={["container", wide && "TODO"]}>
   <slot />
 </div>
-
-<style>
-  .container {
-    margin: auto;
-    padding: 1em;
-    max-width: 80ch;
-
-    &.wide {
-      max-width: 130ch;
-    }
-  }
-</style>
