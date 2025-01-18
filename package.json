@@ -10,6 +10,7 @@
     "format": "npx prettier . --write"
   },
   "dependencies": {
+    "@astrojs/db": "^0.14.5",
     "@astrojs/react": "^4.1.5",
     "@astrojs/tailwind": "5.1.4",
     "@astrojs/vercel": "8.0.1",

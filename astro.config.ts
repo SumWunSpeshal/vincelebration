@@ -4,6 +4,8 @@ import { defineConfig } from "astro/config";
 
 import react from "@astrojs/react";
 
+import db from "@astrojs/db";
+
 export default defineConfig({
   output: "server",
   adapter: vercel({
@@ -12,5 +14,5 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  integrations: [tailwind(), react()],
+  integrations: [tailwind(), react(), db()],
 });

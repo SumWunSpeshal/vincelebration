@@ -1,11 +1,15 @@
 ---
 import { CldImage } from "astro-cloudinary";
+import { Comment, db, eq } from "astro:db";
 import { getImages } from "../../clients/cached-requests";
 import Layout from "../../layouts/Layout.astro";
 
 export const prerender = false;
 
 const { id } = Astro.params;
+
+const comments = await db.select().from(Comment).where(eq(Comment.postId, id));
+console.log("comments:", comments);
 
 const assets = await getImages();
 const currIndex = assets.resources.findIndex((el) => el.public_id === id);
