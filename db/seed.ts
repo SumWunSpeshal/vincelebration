@@ -1,4 +1,4 @@
-import { Comment, db } from "astro:db";
+import { Comment, Post, db } from "astro:db";
 
 // https://astro.build/db/seed
 export default async function seed() {
@@ -17,6 +17,13 @@ export default async function seed() {
       postId: "foobar",
       content: "Content 3",
       author: "Max Mustermann",
+    },
+  ]);
+
+  await db.insert(Post).values([
+    {
+      content: "Standalone Post",
+      author: "Sacha Rodier",
     },
   ]);
 }
