@@ -2,11 +2,12 @@
 import { CldImage, CldUploadWidget } from "astro-cloudinary";
 import { getImages } from "../clients/cached-requests";
 import { Button } from "@/components/ui/button";
-import Intro from "@/components/Intro.astro";
 import ImageGrid from "@/components/ImageGrid.astro";
 import ImageFrame from "@/components/ImageFrame.astro";
 import Container from "@/components/Container.astro";
 import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/Hero.astro";
+import Intro from "@/components/Intro.astro";
 
 export const prerender = false;
 
@@ -15,16 +16,17 @@ const assets = await getImages();
 
 <Layout title="Chez Superdad">
   <main>
+    <Hero />
     <Intro />
     <Container>
-      <h1>Chez <span class="text-gradient">Superdad</span></h1>
-
-      <CldUploadWidget
-        uploadPreset="vincelebration-user-upload"
-        id="upload-events"
-      >
-        <Button>Upload</Button>
-      </CldUploadWidget>
+      <div class="flex justify-center mb-8">
+        <CldUploadWidget
+          uploadPreset="vincelebration-user-upload"
+          id="upload-events"
+        >
+          <Button>Upload</Button>
+        </CldUploadWidget>
+      </div>
 
       <script>
         const widget = document.querySelector("#upload-events");
@@ -61,34 +63,3 @@ const assets = await getImages();
     </Container>
   </main>
 </Layout>
-
-<style>
-  :root {
-    --astro-gradient: linear-gradient(0deg, #4f39fa, #da62c4);
-  }
-
-  h1 {
-    margin: 2rem 0;
-  }
-
-  .text-gradient {
-    font-weight: 900;
-    background-image: var(--astro-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 100% 200%;
-    background-position-y: 100%;
-    border-radius: 0.4rem;
-    animation: pulse 4s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      background-position-y: 0%;
-    }
-    50% {
-      background-position-y: 80%;
-    }
-  }
-</style>

@@ -13,10 +13,6 @@ module.exports = {
       fontFamily: {
         sans: ["Radikal", ...defaultTheme.fontFamily.sans],
       },
-      colors: {
-        paper: "#f0f0df",
-        "code-bg": "#2d2d2d",
-      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

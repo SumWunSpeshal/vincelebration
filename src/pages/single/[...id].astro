@@ -25,7 +25,7 @@ const next = assets.resources[currIndex + 1];
               href={`/single/${prev.public_id}`}
               transition:name={id + "prev"}
             >
-              <div class="rounded-full size-12 bg-white/60" />
+              <div class="rounded-full size-10 bg-white/60" />
               <span class="sr-only">Prev</span>
             </a>
           )}
@@ -46,7 +46,7 @@ const next = assets.resources[currIndex + 1];
               href={`/single/${next.public_id}`}
               transition:name={id + "next"}
             >
-              <div class="rounded-full size-12 bg-white/60 z-10" />
+              <div class="rounded-full size-10 bg-white/60 z-10" />
               <span class="sr-only">Next</span>
             </a>
           )}
@@ -68,16 +68,14 @@ const next = assets.resources[currIndex + 1];
 <style>
   .prev {
     mask:
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M16 4L6 12L16 20Z' fill='black'/%3E%3C/svg%3E")
-        2px center/38px no-repeat,
+      url("/arrow-left.svg") center/32px no-repeat,
       linear-gradient(#000 0 0);
     mask-composite: exclude;
   }
 
   .next {
     mask:
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 4L18 12L8 20Z' fill='black'/%3E%3C/svg%3E")
-        6px center/38px no-repeat,
+      url("/arrow-right.svg") center/32px no-repeat,
       linear-gradient(#000 0 0);
     mask-composite: exclude;
   }

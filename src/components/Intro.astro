@@ -1,47 +1,13 @@
 ---
-import { Image } from "astro:assets";
-import jpeg from "../assets/papa_sw_cropped.jpg";
 import Container from "./Container.astro";
 ---
 
-<div class="outer">
-  <div class="img-wrap">
-    <Image src={jpeg} alt="Astro Logo" layout="full-width" />
-  </div>
-  <div class="text">
-    <Container wide>
-      <div
-        class="text-white py-8 lg:py-16 text-2xl lg:text-4xl leading-tight text-right"
-      >
-        vincent, tom, superdad
-      </div>
-    </Container>
-  </div>
+<div class="mb-8">
+  <Container width="narrow">
+    <p class="text-center">
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi odit,
+      provident laborum quis nam ab sequi iusto laudantium enim at, distinctio
+      tempora repellat minus! Doloribus molestiae fugiat natus fugit ea.
+    </p>
+  </Container>
 </div>
-
-<style>
-  .outer {
-    display: grid;
-    mask-image: radial-gradient(ellipse, black 70%, rgba(0, 0, 0, 0) 50%);
-    mask-size: 240% 130%;
-    mask-position: bottom;
-  }
-
-  .img-wrap {
-    grid-area: 1 / 1;
-    background-color: #000;
-  }
-
-  img {
-    object-fit: cover;
-    object-position: right;
-    width: 100%;
-    height: 100%;
-    opacity: 0.25;
-  }
-
-  .text {
-    grid-area: 1 / 1;
-    align-self: end;
-  }
-</style>

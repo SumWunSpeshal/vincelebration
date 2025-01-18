@@ -1,11 +1,17 @@
 ---
 interface Props {
-  wide?: boolean;
+  width?: "narrow" | "wide";
 }
 
-const { wide = false } = Astro.props;
+const { width } = Astro.props;
 ---
 
-<div class:list={["container", wide && "TODO"]}>
+<div
+  class:list={[
+    "container",
+    width === "narrow" && "max-w-2xl",
+    width === "wide" && "TODO",
+  ]}
+>
   <slot />
 </div>
