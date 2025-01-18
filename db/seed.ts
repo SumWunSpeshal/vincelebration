@@ -7,10 +7,17 @@ export default async function seed() {
       postId: "studio_cropped_r2yzdc",
       content: "Content",
       author: "Sacha Rodier",
+      published: new Date("2024-01-02"),
     },
     {
       postId: "studio_cropped_r2yzdc",
       content: "Content 2",
+      author: "Sacha Rodier",
+      published: new Date("2024-12-31"),
+    },
+    {
+      postId: "studio_cropped_r2yzdc",
+      content: "Content 3",
       author: "Sacha Rodier",
     },
     {

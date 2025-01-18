@@ -26,7 +26,7 @@ import { Button } from "./button";
 
 export function Settings() {
   const formSchema = z.object({
-    username: z.string(),
+    username: z.string().nonempty(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -76,7 +76,9 @@ export function Settings() {
             />
             <DialogFooter>
               <DialogClose asChild>
-                <Button type="submit">Sauvegarder</Button>
+                <Button type="submit" disabled={!form.formState.isValid}>
+                  Sauvegarder
+                </Button>
               </DialogClose>
             </DialogFooter>
           </form>

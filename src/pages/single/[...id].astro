@@ -1,5 +1,6 @@
 ---
 import Container from "@/components/Container.astro";
+import { CommentForm } from "@/components/ui/comment-form";
 import { Separator } from "@/components/ui/separator";
 import { CldImage } from "astro-cloudinary";
 import { Comment, db, eq } from "astro:db";
@@ -11,7 +12,6 @@ export const prerender = false;
 const { id } = Astro.params;
 
 const comments = await db.select().from(Comment).where(eq(Comment.postId, id));
-console.log("comments:", comments);
 
 const assets = await getImages();
 const currIndex = assets.resources.findIndex((el) => el.public_id === id);
@@ -73,23 +73,30 @@ const next = assets.resources[currIndex + 1];
       <Container>
         <div class="space-y-8">
           <h2 class="text-4xl font-medium">Commentaires</h2>
+          <div>
+            <CommentForm client:load />
+          </div>
           <div class="space-y-4">
             {
-              comments.map((el, i) => (
-                <Fragment>
-                  {i !== 0 && <Separator />}
-                  <div class="space-y-2">
-                    <div>
-                      <span class="font-medium text-lg">{el.author}</span>
-                      &nbsp;
-                      <small class="text-slate-700">
-                        {new Intl.DateTimeFormat("fr-FR").format(el.published)}
-                      </small>
+              comments
+                .sort((a, b) => (a.published > b.published ? -1 : 1))
+                .map((el, i) => (
+                  <Fragment>
+                    {i !== 0 && <Separator />}
+                    <div class="space-y-2">
+                      <div>
+                        <span class="font-medium text-lg">{el.author}</span>
+                        &nbsp;
+                        <small class="text-slate-700">
+                          {new Intl.DateTimeFormat("fr-FR").format(
+                            el.published
+                          )}
+                        </small>
+                      </div>
+                      <div>{el.content}</div>
                     </div>
-                    <div>{el.content}</div>
-                  </div>
-                </Fragment>
-              ))
+                  </Fragment>
+                ))
             }
           </div>
         </div>
