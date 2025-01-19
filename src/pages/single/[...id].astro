@@ -11,7 +11,10 @@ export const prerender = false;
 
 const { id } = Astro.params;
 
-const comments = await db.select().from(Comment).where(eq(Comment.postId, id));
+const comments = await db
+  .select()
+  .from(Comment)
+  .where(eq(Comment.postId, id ?? ""));
 
 const assets = await getImages();
 const currIndex = assets.resources.findIndex((el) => el.public_id === id);
