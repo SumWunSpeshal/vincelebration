@@ -2,16 +2,13 @@
 interface Props {
   wide?: boolean;
   href: string;
+  isVideo?: boolean;
 }
 
-const { wide = false, href } = Astro.props;
-
-interface Props {
-  href: string;
-}
+const { wide = false, href, isVideo = false } = Astro.props;
 ---
 
-<a href={href} class:list={["frame", wide && "wide"]}>
+<a href={href} class:list={["frame", wide && "wide", isVideo && "is-video"]}>
   <slot />
 </a>
 
@@ -22,9 +19,10 @@ interface Props {
     border: 0.375rem solid transparent;
     object-fit: cover;
 
-    &:after {
+    &:before {
       content: "";
       position: absolute;
+      z-index: 2;
       inset: 0;
       background-color: #000;
       opacity: 0;
@@ -32,8 +30,27 @@ interface Props {
       transition: opacity 0.15s ease-in-out;
     }
 
-    &:hover:after {
+    &:hover:before {
       opacity: 0.1;
+    }
+
+    &.is-video {
+      &:after {
+        content: "";
+        position: absolute;
+        z-index: 3;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        height: 3.5rem;
+        width: 3.5rem;
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 9999px;
+        mask:
+          url("/play.svg") center/32px no-repeat,
+          linear-gradient(#000 0 0);
+        mask-composite: exclude;
+      }
     }
   }
 

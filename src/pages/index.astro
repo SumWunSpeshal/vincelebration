@@ -49,6 +49,7 @@ const assets = await getImages();
               <ImageFrame
                 wide={width / height > 1.6}
                 href={`/single/${public_id}`}
+                isVideo={resource_type === "video"}
               >
                 {resource_type === "image" ? (
                   <CldImage
