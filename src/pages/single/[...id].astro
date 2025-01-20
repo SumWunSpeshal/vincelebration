@@ -77,7 +77,7 @@ const next = assets.resources[currIndex + 1];
         <div class="space-y-8">
           <h2 class="text-4xl font-medium">Commentaires</h2>
           <div>
-            <CommentForm client:load />
+            <CommentForm postId={id!} client:load />
           </div>
           <div class="space-y-4">
             {

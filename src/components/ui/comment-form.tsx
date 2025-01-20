@@ -14,7 +14,7 @@ import {
 import { Input } from "./input";
 import { Textarea } from "./textarea";
 
-export function CommentForm() {
+export function CommentForm({ postId }: { postId: string }) {
   const formSchema = z.object({
     comment: z.string().nonempty(),
     username: z.string().nonempty(),
@@ -30,7 +30,19 @@ export function CommentForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     localStorage.setItem("username", values.username);
-    console.log("values:", values);
+    console.log("POSTing comment. values:", values);
+
+    fetch("/api/comment", {
+      method: "POST",
+      body: JSON.stringify({ ...values, postId }),
+    })
+      .then((res) => {
+        console.log("POSTING succeeded. res:", res);
+        location.reload();
+      })
+      .catch((e) => {
+        console.warn("e:", e);
+      });
   }
 
   useEffect(() => {
