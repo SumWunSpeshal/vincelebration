@@ -8,6 +8,7 @@ import Container from "@/components/Container.astro";
 import Layout from "@/layouts/Layout.astro";
 import Hero from "@/components/Hero.astro";
 import Intro from "@/components/Intro.astro";
+import { Image } from "astro:assets";
 
 export const prerender = false;
 
@@ -43,21 +44,32 @@ const assets = await getImages();
 
       <ImageGrid>
         {
-          assets.resources.map(({ width, height, public_id, display_name }) => (
-            <ImageFrame
-              wide={width / height > 1.6}
-              href={`/single/${public_id}`}
-            >
-              <CldImage
-                src={public_id}
-                width={width}
-                height={height}
-                alt={display_name}
-                sizes="100vw"
-                transition:name={public_id}
-              />
-            </ImageFrame>
-          ))
+          assets.resources.map(
+            ({ width, height, public_id, display_name, resource_type }) => (
+              <ImageFrame
+                wide={width / height > 1.6}
+                href={`/single/${public_id}`}
+              >
+                {resource_type === "image" ? (
+                  <CldImage
+                    src={public_id}
+                    width={width}
+                    height={height}
+                    alt={display_name}
+                    sizes="100vw"
+                    transition:name={public_id}
+                  />
+                ) : (
+                  <Image
+                    src="https://res.cloudinary.com/dsdhp362q/video/upload/videoplayback_srs9oe.jpg?_a=BAMCkGJu0"
+                    width={width}
+                    height={height}
+                    alt={display_name}
+                  />
+                )}
+              </ImageFrame>
+            )
+          )
         }
       </ImageGrid>
     </Container>

@@ -8,6 +8,9 @@ import db from "@astrojs/db";
 
 export default defineConfig({
   output: "server",
+  image: {
+    domains: ["res.cloudinary.com"],
+  },
   adapter: vercel({
     imageService: true,
     webAnalytics: {
