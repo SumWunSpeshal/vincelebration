@@ -16,7 +16,7 @@ export async function getFromCache<
 export async function getImages() {
   return await getFromCache("imgs", async () => {
     return await cloudinary.search
-      .expression("resource_type:image OR resource_type:video")
+      .expression('(resource_type:image OR resource_type:video) AND folder=""')
       .with_field("context")
       .max_results(100)
       .execute();

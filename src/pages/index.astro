@@ -38,42 +38,48 @@ const assets = await getImages();
             e: CustomEvent<{ detail: object }>
           ) => {
             console.log("clduploadwidget:success", e.detail);
-            fetch("/api/cache/imgs", { method: "DELETE" }).then().catch();
+            fetch("/api/cache/imgs", { method: "DELETE" })
+              .then(() => {
+                window.location.reload();
+              })
+              .catch();
           }) as EventListener);
         }
       </script>
 
-      <ImageGrid>
-        {
-          assets.resources.map(
-            ({ width, height, public_id, display_name, resource_type }) => (
-              <ImageFrame
-                wide={width / height > 1.6}
-                href={`/single/${public_id}`}
-                isVideo={resource_type === "video"}
-              >
-                {resource_type === "image" ? (
-                  <CldImage
-                    src={public_id}
-                    width={width}
-                    height={height}
-                    alt={display_name}
-                    sizes="100vw"
-                    transition:name={public_id}
-                  />
-                ) : (
-                  <Image
-                    src={cloudinary.utils.video_thumbnail_url(public_id)}
-                    width={width}
-                    height={height}
-                    alt={display_name}
-                  />
-                )}
-              </ImageFrame>
+      <div class="pb-16">
+        <ImageGrid>
+          {
+            assets.resources.map(
+              ({ width, height, public_id, display_name, resource_type }) => (
+                <ImageFrame
+                  wide={width / height > 1.6}
+                  href={`/single/${public_id}`}
+                  isVideo={resource_type === "video"}
+                >
+                  {resource_type === "image" ? (
+                    <CldImage
+                      src={public_id}
+                      width={width}
+                      height={height}
+                      alt={display_name}
+                      sizes="100vw"
+                      transition:name={public_id}
+                    />
+                  ) : (
+                    <Image
+                      src={cloudinary.utils.video_thumbnail_url(public_id)}
+                      width={width}
+                      height={height}
+                      alt={display_name}
+                    />
+                  )}
+                </ImageFrame>
+              )
             )
-          )
-        }
-      </ImageGrid>
+          }
+        </ImageGrid>
+      </div>
     </Container>
   </main>
 </Layout>
