@@ -9,6 +9,7 @@ import Layout from "@/layouts/Layout.astro";
 import Hero from "@/components/Hero.astro";
 import Intro from "@/components/Intro.astro";
 import { Image } from "astro:assets";
+import { cloudinary } from "@/clients/cloudinary";
 
 export const prerender = false;
 
@@ -62,7 +63,7 @@ const assets = await getImages();
                   />
                 ) : (
                   <Image
-                    src="https://res.cloudinary.com/dsdhp362q/video/upload/videoplayback_srs9oe.jpg?_a=BAMCkGJu0"
+                    src={cloudinary.utils.video_thumbnail_url(public_id)}
                     width={width}
                     height={height}
                     alt={display_name}

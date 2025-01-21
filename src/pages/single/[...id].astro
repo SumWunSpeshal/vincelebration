@@ -1,4 +1,5 @@
 ---
+import { cloudinary } from "@/clients/cloudinary";
 import Container from "@/components/Container.astro";
 import { CommentForm } from "@/components/ui/comment-form";
 import { Separator } from "@/components/ui/separator";
@@ -39,15 +40,24 @@ const next = assets.resources[currIndex + 1];
             </a>
           )}
 
-          <CldImage
-            src={id}
-            width={+item.width}
-            height={+item.height}
-            alt={item.display_name}
-            sizes="100vw"
-            transition:name={id}
-            class="!object-contain !max-h-full !max-w-full object-center !size-auto pointer-events-none"
-          />
+          {item.resource_type === "image" ? (
+            <CldImage
+              src={id}
+              width={+item.width}
+              height={+item.height}
+              alt={item.display_name}
+              sizes="100vw"
+              transition:name={id}
+              class="!object-contain !max-h-full !max-w-full object-center !size-auto pointer-events-none"
+            />
+          ) : (
+            <video
+              src={item.url}
+              controls
+              class="size-full max-w-full max-h-full"
+              poster={cloudinary.utils.video_thumbnail_url(item.public_id)}
+            />
+          )}
 
           {next && (
             <a
@@ -121,5 +131,12 @@ const next = assets.resources[currIndex + 1];
       url("/arrow-right.svg") center/32px no-repeat,
       linear-gradient(#000 0 0);
     mask-composite: exclude;
+  }
+
+  .video-wrap {
+    flex-grow: 1;
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
   }
 </style>
