@@ -38,11 +38,7 @@ const assets = await getImages();
             e: CustomEvent<{ detail: object }>
           ) => {
             console.log("clduploadwidget:success", e.detail);
-            fetch("/api/cache/imgs", { method: "DELETE" })
-              .then(() => {
-                window.location.reload();
-              })
-              .catch();
+            fetch("/api/cache/imgs", { method: "DELETE" }).then().catch();
           }) as EventListener);
         }
       </script>
