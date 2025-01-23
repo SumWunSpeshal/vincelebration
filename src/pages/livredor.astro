@@ -1,9 +1,35 @@
 ---
+import Container from "@/components/Container.astro";
+import Headline from "@/components/Headline.astro";
+import Hero from "@/components/Hero.astro";
+import { PostForm } from "@/components/ui/post-form";
 import Layout from "@/layouts/Layout.astro";
+import { db, Post } from "astro:db";
 
 export const prerender = false;
+
+const posts = await db.select().from(Post);
 ---
 
 <Layout title="Vincelebration">
-  <main>Livre d'or</main>
+  <main>
+    <Hero />
+    <Container>
+      <div class="mb-8">
+        <Headline>Livre d'or</Headline>
+      </div>
+      <PostForm client:load />
+      <ul class="pb-16">
+        {
+          posts.map((el) => (
+            <li>
+              <div>{el.published}</div>
+              <div>{el.content}</div>
+              <div>{el.author}</div>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </main>
 </Layout>

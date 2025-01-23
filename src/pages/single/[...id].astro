@@ -1,6 +1,7 @@
 ---
 import { cloudinary } from "@/clients/cloudinary";
 import Container from "@/components/Container.astro";
+import Headline from "@/components/Headline.astro";
 import { CommentForm } from "@/components/ui/comment-form";
 import { Separator } from "@/components/ui/separator";
 import { CldImage } from "astro-cloudinary";
@@ -85,7 +86,7 @@ const next = assets.resources[currIndex + 1];
     <div class="pb-16">
       <Container>
         <div class="space-y-8">
-          <h2 class="text-4xl font-medium">Commentaires</h2>
+          <Headline>Commentaires</Headline>
           <div>
             <CommentForm postId={id!} client:load />
           </div>

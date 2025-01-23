@@ -14,27 +14,27 @@ import {
 import { Input } from "./input";
 import { Textarea } from "./textarea";
 
-export function CommentForm({ postId }: { postId: string }) {
+export function PostForm() {
   const formSchema = z.object({
-    comment: z.string().nonempty(),
+    content: z.string().nonempty(),
     username: z.string().nonempty(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      comment: "",
+      content: "",
       username: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     localStorage.setItem("username", values.username);
-    console.log("POSTing comment. values:", values);
+    console.log("POSTing post. values:", values);
 
-    fetch("/api/comment", {
+    fetch("/api/post", {
       method: "POST",
-      body: JSON.stringify({ ...values, postId }),
+      body: JSON.stringify(values),
     })
       .then((res) => {
         console.log("POSTING succeeded. res:", res);
@@ -67,13 +67,13 @@ export function CommentForm({ postId }: { postId: string }) {
         />
         <FormField
           control={form.control}
-          name="comment"
+          name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nouveau commentaire</FormLabel>
+              <FormLabel>Nouveau message</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="commentaire"
+                  placeholder="Mon message"
                   className="min-h-40"
                   {...field}
                 />
