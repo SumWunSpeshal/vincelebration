@@ -1,4 +1,6 @@
 ---
+import FixedNav from "@/components/FixedNav.astro";
+import { AtTop } from "@/components/ui/at-top";
 import "@/styles/globals.css";
 import { ClientRouter } from "astro:transitions";
 import Nav from "../components/Nav.astro";
@@ -27,8 +29,10 @@ const { title } = Astro.props as Props;
     <ClientRouter />
   </head>
   <body>
+    <AtTop client:load />
     <Nav />
     <slot />
+    <FixedNav />
   </body>
 </html>
 
