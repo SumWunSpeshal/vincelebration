@@ -5,6 +5,13 @@ import { Button } from "./ui/button";
 
 <div class="fixed right-4 bottom-4">
   <CldUploadWidget uploadPreset="vincelebration-user-upload" id="upload-events">
-    <Button>Upload</Button>
+    <Button>
+      <div class="flex">
+        <img class="w-4" src="/upload.svg" alt="upload icon" />
+        <div class="w-0 group-[.at-top]:w-auto overflow-hidden transition-all">
+          <span class="pl-3">Upload</span>
+        </div>
+      </div>
+    </Button>
   </CldUploadWidget>
 </div>

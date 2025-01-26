@@ -28,7 +28,7 @@ const { title } = Astro.props as Props;
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body>
+  <body class="group">
     <AtTop client:load />
     <Nav />
     <slot />
