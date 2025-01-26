@@ -53,11 +53,12 @@ const next = assets.resources[currIndex + 1];
             />
           ) : (
             <video
-              src={item.secure_url}
               controls
               class="size-full max-w-full max-h-full"
               poster={cloudinary.utils.video_thumbnail_url(item.public_id)}
-            />
+            >
+              <source type="video/mp4" src={item.secure_url} />
+            </video>
           )}
 
           {next && (
