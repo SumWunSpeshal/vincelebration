@@ -1,10 +1,10 @@
 ---
-import { CldUploadWidget } from "astro-cloudinary";
+import WidgetLoader from "@/components/WidgetLoader.astro";
 import { Button } from "./ui/button";
 ---
 
 <div class="fixed right-4 bottom-4">
-  <CldUploadWidget uploadPreset="vincelebration-user-upload" id="upload-events">
+  <WidgetLoader uploadPreset="vincelebration-user-upload" id="upload-events">
     <Button>
       <div class="flex">
         <img class="w-4" src="/upload.svg" alt="upload icon" />
@@ -13,5 +13,5 @@ import { Button } from "./ui/button";
         </div>
       </div>
     </Button>
-  </CldUploadWidget>
+  </WidgetLoader>
 </div>

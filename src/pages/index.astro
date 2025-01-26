@@ -1,5 +1,5 @@
 ---
-import { CldImage, CldUploadWidget } from "astro-cloudinary";
+import { CldImage } from "astro-cloudinary";
 import { getImages } from "../clients/cached-requests";
 import { Button } from "@/components/ui/button";
 import ImageGrid from "@/components/ImageGrid.astro";
@@ -10,6 +10,7 @@ import Hero from "@/components/Hero.astro";
 import Intro from "@/components/Intro.astro";
 import { Image } from "astro:assets";
 import { cloudinary } from "@/clients/cloudinary";
+import WidgetLoader from "@/components/WidgetLoader.astro";
 
 export const prerender = false;
 
@@ -22,12 +23,12 @@ const assets = await getImages();
     <Intro />
     <Container>
       <div class="flex justify-center mb-8">
-        <CldUploadWidget
+        <WidgetLoader
           uploadPreset="vincelebration-user-upload"
           id="upload-events"
         >
           <Button>Upload</Button>
-        </CldUploadWidget>
+        </WidgetLoader>
       </div>
 
       <script>

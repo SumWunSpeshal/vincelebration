@@ -1,0 +1,254 @@
+---
+import { type CloudinaryUploadWidgetOptions } from "@cloudinary-util/types";
+import {
+  getUploadWidgetOptions,
+  type ConfigOptions,
+} from "@cloudinary-util/url-loader";
+import { getCloudinaryConfig } from "node_modules/astro-cloudinary/src/lib/cloudinary";
+
+export interface CldUploadWidgetProps {
+  class?: string;
+  config?: ConfigOptions;
+  id?: string;
+  options?: CloudinaryUploadWidgetOptions;
+  signatureEndpoint?: URL | RequestInfo;
+  uploadPreset?: string;
+}
+
+interface Props extends CldUploadWidgetProps {}
+
+const {
+  class: className,
+  config,
+  id,
+  options,
+  signatureEndpoint,
+  uploadPreset,
+}: Props = Astro.props;
+
+// When creating a signed upload, you need to provide both your Cloudinary API Key
+// as well as a signature generator function that will sign any paramters
+// either on page load or during the upload process. Read more about signed uploads at:
+// https://cloudinary.com/documentation/upload_widget#signed_uploads
+
+const cloudinaryConfig = getCloudinaryConfig(config);
+
+const uploadOptions = getUploadWidgetOptions(
+  {
+    uploadPreset:
+      uploadPreset || import.meta.env.PUBLIC_CLOUDINARY_UPLOAD_PRESET,
+    ...options,
+  },
+  cloudinaryConfig
+);
+
+let playerClassName = "astro-cloudinary-clduploadwidget";
+
+if (typeof className === "string") {
+  playerClassName = `${playerClassName} ${className}`;
+}
+---
+
+<span
+  id={id}
+  class={playerClassName}
+  data-clduploadwidgetupload-options={JSON.stringify(uploadOptions)}
+  data-clduploadwidgetupload-signatureendpoint={signatureEndpoint}
+>
+  <slot />
+</span>
+
+<script>
+  import type {
+    CloudinaryCreateUploadWidget,
+    CloudinaryUploadWidget,
+  } from "@cloudinary-util/types";
+  import {
+    generateSignatureCallback,
+    generateUploadWidgetResultCallback,
+  } from "@cloudinary-util/url-loader";
+
+  /**
+   * triggerOnIdle
+   * @see MDN Polyfill https://github.com/behnammodi/polyfill/blob/master/window.polyfill.js#L7-L24
+   */
+
+  export function triggerOnIdle(callback: any) {
+    if (window && "requestIdleCallback" in window) {
+      return requestIdleCallback(callback);
+    }
+    return setTimeout(() => callback(), 1);
+  }
+
+  /**
+   * loadScript
+   */
+
+  export function loadScript(src: string) {
+    return new Promise((resolve, reject) => {
+      if (typeof document === "undefined") {
+        reject("Can not be loaded on");
+      }
+
+      const script = document.createElement("script");
+
+      script.src = src;
+      script.async = true;
+
+      document.body.appendChild(script);
+
+      function handleOnLoad() {
+        cleanup();
+        resolve({
+          script,
+        });
+      }
+
+      function handleOnError() {
+        cleanup();
+        reject({
+          script,
+        });
+      }
+
+      script.addEventListener("load", handleOnLoad);
+      script.addEventListener("error", handleOnError);
+
+      function cleanup() {
+        script.removeEventListener("load", handleOnLoad);
+        script.removeEventListener("error", handleOnError);
+      }
+    });
+  }
+
+  interface Cloudinary {
+    createUploadWidget: CloudinaryCreateUploadWidget;
+  }
+
+  document.addEventListener("astro:page-load", async () => {
+    const widgets = document.querySelectorAll(
+      ".astro-cloudinary-clduploadwidget"
+    ) as NodeListOf<HTMLSpanElement>;
+
+    if (widgets.length === 0) return;
+
+    // Verify that the script already hasn't been loaded before trying to load it again
+
+    if (
+      !("cloudinary" in window) ||
+      typeof (window.cloudinary as Cloudinary).createUploadWidget !== "function"
+    ) {
+      await loadScript("https://upload-widget.cloudinary.com/global/all.js");
+    }
+
+    if (!("cloudinary" in window)) {
+      if (import.meta.env.MODE === "development") {
+        throw new Error(
+          "Unable to find cloudinary when loading the CldUploadWidget."
+        );
+      }
+      // Silently exit if it can' tbe found, we don't want to break people's page in production just
+      // because the UW wouldn't load
+      return;
+    }
+
+    const cloudinary = window.cloudinary as Cloudinary;
+
+    widgets.forEach((widget) => {
+      let widgetInstance: CloudinaryUploadWidget;
+
+      // Primary user interaction point for the upload widget, create
+      // an instance if it doesnt already exist (someone triggering before idle)
+      // then attempt to open the upload widget
+
+      const widgetButton = widget.querySelector("button");
+
+      if (!widgetButton) {
+        if (import.meta.env.MODE === "development") {
+          throw new Error(
+            "Unable to find button element in CldUploadWidget. Please nest a button inside. (Ex: <CldUploadWidget><button /></CldUploadWidget>)"
+          );
+        }
+        return;
+      }
+
+      widgetButton.disabled = true;
+
+      widgetButton.addEventListener("click", () => {
+        if (!widgetInstance) {
+          widgetInstance = createWidget();
+        }
+        widgetInstance.open();
+      });
+
+      // Parse the upload options from the DOM and configure the
+      // remaining options that couldn't be serialized
+
+      const uploadOptions =
+        widget.dataset.clduploadwidgetuploadOptions &&
+        JSON.parse(widget.dataset.clduploadwidgetuploadOptions);
+      const signatureEndpoint =
+        widget.dataset.clduploadwidgetuploadSignatureendpoint;
+
+      const uploadSignature =
+        signatureEndpoint &&
+        generateSignatureCallback({
+          signatureEndpoint: String(signatureEndpoint),
+          fetch,
+        });
+
+      const resultsCallback = generateUploadWidgetResultCallback({
+        onError: (uploadError) => {
+          const customEvent = new CustomEvent(`clduploadwidget:error`, {
+            detail: {
+              event: "error",
+              error: uploadError,
+              UploadWidget: widget,
+            },
+          });
+
+          widget?.dispatchEvent(customEvent);
+        },
+        onResult: (uploadResult) => {
+          widgetButton.removeAttribute("disabled");
+          if (typeof uploadResult?.event !== "string") return;
+
+          const customEvent = new CustomEvent(
+            `clduploadwidget:${uploadResult?.event}`,
+            {
+              detail: {
+                event: uploadResult.event,
+                info: uploadResult.info,
+                UploadWidget: widgetInstance,
+              },
+            }
+          );
+
+          widget?.dispatchEvent(customEvent);
+        },
+      });
+
+      // To help improve performance, attempt to create a new widget instance
+      // ONLY when the page is deemed idle. This helps offload the JS and
+      // additional file downloads for initialization until after the page
+      // settles while attempting to perform those functions before
+      // user interaction
+
+      triggerOnIdle(() => {
+        if (!widgetInstance) {
+          widgetInstance = createWidget();
+        }
+      });
+
+      function createWidget() {
+        return cloudinary.createUploadWidget(
+          {
+            ...uploadOptions,
+            uploadSignature,
+          },
+          resultsCallback
+        );
+      }
+    });
+  });
+</script>
