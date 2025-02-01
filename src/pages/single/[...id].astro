@@ -120,6 +120,14 @@ const next = assets.resources[currIndex + 1];
   </main>
 </Layout>
 
+<script>
+  document.addEventListener("keyup", (event) => {
+    if (event.key === "Escape") {
+      window.location.href = "/";
+    }
+  });
+</script>
+
 <style>
   .prev {
     mask:
