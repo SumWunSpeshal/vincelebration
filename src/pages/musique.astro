@@ -1,0 +1,66 @@
+---
+import Container from "@/components/Container.astro";
+import Hero from "@/components/Hero.astro";
+import { AudioView } from "@/components/ui/audio-view";
+import Layout from "@/layouts/Layout.astro";
+
+const tracks = [
+  {
+    id: crypto.randomUUID(),
+    cover: "lairduverseau.png",
+    track: "/musique/lairduverseau/01-dans-mes-bras.MP3",
+    title: "Dans mes bras",
+  },
+  {
+    id: crypto.randomUUID(),
+    cover: "lairduverseau.png",
+    track: "/musique/lairduverseau/02-cest-mon-coeur.MP3",
+    title: "C'est Mon Cœur",
+  },
+  {
+    id: crypto.randomUUID(),
+    cover: "lairduverseau.png",
+    track: "/musique/lairduverseau/03-denoncez-vous.MP3",
+    title: "Dénoncez vous",
+  },
+  {
+    id: crypto.randomUUID(),
+    cover: "lairduverseau.png",
+    track: "/musique/lairduverseau/04-courir.MP3",
+    title: "Courir",
+  },
+  {
+    id: crypto.randomUUID(),
+    cover: "lairduverseau.png",
+    track: "/musique/lairduverseau/05-voyeur-voleur.MP3",
+    title: "Voyeur Voleur",
+  },
+  {
+    id: crypto.randomUUID(),
+    cover: "lairduverseau.png",
+    track: "/musique/lairduverseau/06-vous-changer-de-vie.MP3",
+    title: "Vous Changer De Vie",
+  },
+  {
+    id: crypto.randomUUID(),
+    cover: "lairduverseau.png",
+    track: "/musique/lairduverseau/07-cest-pas-moi.MP3",
+    title: "C'est Pas Moi",
+  },
+  {
+    id: crypto.randomUUID(),
+    cover: "lairduverseau.png",
+    track: "/musique/lairduverseau/08-maladroit.MP3",
+    title: "Maladroit",
+  },
+] as const;
+---
+
+<Layout title="Vincelebration">
+  <main>
+    <Hero />
+    <Container>
+      <AudioView tracks={tracks} client:load />
+    </Container>
+  </main>
+</Layout>
