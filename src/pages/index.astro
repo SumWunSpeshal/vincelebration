@@ -2,7 +2,6 @@
 import { CldImage } from "astro-cloudinary";
 import { getImages } from "../clients/cached-requests";
 import { Button } from "@/components/ui/button";
-import ImageGrid from "@/components/ImageGrid.astro";
 import ImageFrame from "@/components/ImageFrame.astro";
 import Container from "@/components/Container.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -11,6 +10,7 @@ import Intro from "@/components/Intro.astro";
 import { Image } from "astro:assets";
 import { cloudinary } from "@/clients/cloudinary";
 import WidgetLoader from "@/components/WidgetLoader.astro";
+import { ImageGrid } from "@/components/ui/image-grid";
 
 export const prerender = false;
 
@@ -45,7 +45,7 @@ const assets = await getImages();
       </script>
 
       <div class="pb-16">
-        <ImageGrid>
+        <ImageGrid client:only>
           {
             assets.resources.map(
               ({ width, height, public_id, display_name, resource_type }) => (
