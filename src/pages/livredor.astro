@@ -3,12 +3,15 @@ import Container from "@/components/Container.astro";
 import Headline from "@/components/Headline.astro";
 import Hero from "@/components/Hero.astro";
 import { PostForm } from "@/components/ui/post-form";
+import { RichText } from "@/components/ui/rich-text";
 import Layout from "@/layouts/Layout.astro";
 import { db, Post } from "astro:db";
 
 export const prerender = false;
 
 const posts = await db.select().from(Post);
+
+console.log(posts.map((el) => el.content));
 ---
 
 <Layout title="Vincelebration">
@@ -18,16 +21,36 @@ const posts = await db.select().from(Post);
       <div class="mb-8">
         <Headline>Livre d'or</Headline>
       </div>
-      <PostForm client:load />
-      <ul class="pb-16">
+      <div class="mb-12">
+        <PostForm client:load />
+      </div>
+      <ul class="pb-16 space-y-8">
         {
-          posts.map((el) => (
-            <li>
-              <div>{el.published}</div>
-              <div>{el.content}</div>
-              <div>{el.author}</div>
-            </li>
-          ))
+          posts
+            .sort((a, b) => (a.published > b.published ? -1 : 1))
+            .map((el) => (
+              <li
+                class="bg-no-repeat bg-cover bg-top rounded-lg overflow-hidden"
+                style="background-image: url(/bg-comment.jpg);"
+              >
+                <div class="p-6 backdrop-sepia backdrop-blur-[2px] bg-red-700/30">
+                  <div class="py-6 px-4 bg-white/80 rounded-lg">
+                    <span class="flex text-7xl text-red-700 font-serif">«</span>
+                    <div class="px-8">
+                      <RichText render={el.content} />
+                    </div>
+                    <div class="text-right">
+                      <div class="text-7xl text-red-700 font-serif">»</div>
+                      <br />
+                      <div class="text-sm text-red-900">
+                        {new Intl.DateTimeFormat("fr-FR").format(el.published)}
+                      </div>
+                      <div class="font-medium">— {el.author}</div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))
         }
       </ul>
     </Container>

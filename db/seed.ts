@@ -1,4 +1,4 @@
-import { Comment, Post, db } from "astro:db";
+import { Comment, Post, db } from "astro:db"
 
 // https://astro.build/db/seed
 export default async function seed() {
@@ -31,6 +31,16 @@ export default async function seed() {
     {
       content: "Standalone Post",
       author: "Sacha Rodier",
+    },
+    {
+      content: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis, quam modi! Consequatur, excepturi magni. Sit, atque. Ad alias, vel voluptates consectetur eos vitae temporibus velit aliquam. Quis officiis cum labore?",
+      author: "Somebody else",
+    },
+    {
+      content: `Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis, quam modi! Consequatur, excepturi magni. Sit, atque. Ad alias, vel voluptates consectetur eos vitae temporibus velit aliquam. Quis officiis cum labore? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Perferendis, quam modi! Consequatur, excepturi magni. 
+      
+      Sit, atque. Ad alias, vel voluptates consectetur eos vitae temporibus velit aliquam. Quis officiis cum labore? Lorem ipsum dolor sit, amet consectetur adipisicing elit. \n\n Perferendis, quam modi! Consequatur, excepturi magni. Sit, atque. Ad alias, vel voluptates consectetur eos vitae temporibus velit aliquam. Quis officiis cum labore?`,
+      author: "Somebody else",
     },
   ]);
 }
