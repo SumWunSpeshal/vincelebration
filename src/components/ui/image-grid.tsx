@@ -11,7 +11,7 @@ export function ImageGrid({ children }: { children: any }) {
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry?.intersectionRatio === 1) {
+      if (entry?.isIntersecting) {
         setRenderedItems((prev) => {
           const nextItems = items.slice(prev.length, prev.length + 6);
           return [...prev, ...nextItems];
