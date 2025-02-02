@@ -67,6 +67,9 @@ export function AudioView({
         track={current}
         duration={duration}
         progress={progress}
+        onProgressChange={(v) =>
+          audioRef.current && (audioRef.current.currentTime = v)
+        }
         onPause={() => {
           audioRef.current?.pause();
           setIsPlaying(false);

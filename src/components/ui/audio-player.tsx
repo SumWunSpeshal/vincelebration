@@ -1,4 +1,7 @@
+import { debounce } from "@/lib/debounce";
 import { formatDuration } from "@/lib/format-duration";
+import { throttle } from "@/lib/throttle";
+import { useMemo, useState } from "react";
 import type { Track } from "./audio-view";
 
 export function AudioPlayer({
@@ -13,6 +16,7 @@ export function AudioPlayer({
   onSkip,
   onRepeat,
   onShuffle,
+  onProgressChange,
 }: {
   track: Track | undefined;
   isPlaying: boolean;
@@ -22,15 +26,37 @@ export function AudioPlayer({
   isShuffle: boolean;
   duration: number | undefined;
   progress: number;
+  onProgressChange: (progress: number) => void;
   onShuffle: () => void;
   onPause: () => void;
   onSkip: (dir: -1 | 1) => void;
 }) {
+  const [isChanging, setIsChanging] = useState(false);
+
+  function onInput(e: React.FormEvent<HTMLInputElement>) {
+    setIsChanging(true);
+  }
+
+  const onChangeStart = useMemo(() => throttle(onInput, 150), []);
+
+  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (duration) {
+      onProgressChange((duration / 100) * +e.target.value);
+    }
+    setIsChanging(false);
+  }
+
+  const onChangeEnd = useMemo(() => debounce(onChange, 200), []);
+
+  function progressInPercent() {
+    return (progress / (duration ?? Infinity)) * 100;
+  }
+
   return (
     <aside
       className={`fixed inset-x-0 bottom-0 flex gap-6 p-4 bg-zinc-800 transition-transform translate-y-full ${!!track && "!translate-y-0"}`}
     >
-      <div className="size-28 rounded-lg overflow-hidden">
+      <div className="size-32 rounded-lg overflow-hidden">
         {track?.cover && (
           <img
             className="object-contain size-full pointer-events-none select-none"
@@ -39,12 +65,22 @@ export function AudioPlayer({
           />
         )}
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1">
         <span className="font-medium font-mono text-white select-none">
           {track?.title}
         </span>
         <div className="space-y-0.5">
-          <div className="h-1 bg-red-50"></div>
+          <input
+            type="range"
+            name="progress"
+            id="progress"
+            value={isChanging ? undefined : progressInPercent()}
+            onInput={onChangeStart}
+            onChange={onChangeEnd}
+            style={
+              { "--progress": progressInPercent() + "%" } as React.CSSProperties
+            }
+          />
           <div className="flex justify-between text-white text-xs">
             <span>{formatDuration(progress)}</span>
             <span>{formatDuration(duration ?? 0)}</span>
