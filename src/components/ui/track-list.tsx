@@ -12,11 +12,11 @@ export function TrackList({
   const grouped = Object.entries(Object.groupBy(tracks, (el) => el.album));
 
   return (
-    <ul>
+    <ul className="space-y-14">
       {grouped.map(([album, tracks]) => {
         return (
           <li className="space-y-6">
-            <h2 className="text-3xl tracking-wide uppercase">{album}</h2>
+            <h2 className="text-3xl uppercase">{album}</h2>
             {tracks?.[0]?.cover && (
               <div className="max-w-80 max-h-80">
                 <img
