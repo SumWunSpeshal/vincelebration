@@ -56,7 +56,7 @@ export function AudioPlayer({
         )}
       </div>
       <div className="space-y-1">
-        <span className="font-medium font-mono text-white select-none">
+        <span className="font-medium text-white select-none">
           {track?.title}
         </span>
         <div className="space-y-0.5">

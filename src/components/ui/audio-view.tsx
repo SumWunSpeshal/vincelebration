@@ -24,8 +24,22 @@ export function AudioView({
   const [duration, setDuration] = useState(0);
   const [progress, setProgress] = useState(0);
 
+  function getRandomTrack() {
+    return tracks.at(Math.floor(Math.random() * tracks.length));
+  }
+
   function skip(dir: 1 | -1) {
     const index = current ? tracks.indexOf(current) : 0;
+
+    if (isShuffle) {
+      let random = getRandomTrack();
+
+      while (random === current) {
+        random = getRandomTrack();
+      }
+
+      return setCurrentId(random!.id);
+    }
 
     if (isRepeat && !tracks.at(index + dir)) {
       return setCurrentId(tracks.at(0)!.id);
@@ -50,6 +64,7 @@ export function AudioView({
           onTimeUpdate={() =>
             audioRef.current && setProgress(audioRef.current.currentTime)
           }
+          className="hidden"
         >
           <source src={current.track} type="audio/mpeg" />
           Your browser does not support the audio tag.
