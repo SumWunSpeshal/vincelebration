@@ -18,7 +18,13 @@ export function TrackList({
           <li className="space-y-6">
             <h2 className="text-3xl tracking-wide uppercase">{album}</h2>
             {tracks?.[0]?.cover && (
-              <img src={tracks![0]?.cover} alt={album + " Cover"} />
+              <div className="max-w-80 max-h-80">
+                <img
+                  src={tracks![0]?.cover}
+                  alt={album + " Cover"}
+                  className="size-full object-contain"
+                />
+              </div>
             )}
             <ul className="space-y-1">
               {tracks?.map(({ title, id }, i) => (
