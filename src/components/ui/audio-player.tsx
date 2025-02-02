@@ -48,9 +48,7 @@ export function AudioPlayer({
 
   const onChangeEnd = useMemo(() => debounce(onChange, 200), []);
 
-  function progressInPercent() {
-    return (progress / (duration ?? Infinity)) * 100;
-  }
+  const progressInPercent = (progress / (duration ?? Infinity)) * 100;
 
   return (
     <aside
@@ -74,11 +72,11 @@ export function AudioPlayer({
             type="range"
             name="progress"
             id="progress"
-            value={isChanging ? undefined : progressInPercent()}
+            value={isChanging ? undefined : progressInPercent}
             onInput={onChangeStart}
             onChange={onChangeEnd}
             style={
-              { "--progress": progressInPercent() + "%" } as React.CSSProperties
+              { "--progress": progressInPercent + "%" } as React.CSSProperties
             }
           />
           <div className="flex justify-between text-white text-xs">
