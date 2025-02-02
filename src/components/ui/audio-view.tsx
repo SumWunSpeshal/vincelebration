@@ -4,6 +4,7 @@ import { TrackList } from "./track-list";
 
 export type Track = {
   id: string;
+  album: string;
   cover: string;
   track: string;
   title: string;
@@ -20,9 +21,10 @@ export function AudioView({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isRepeat, setIsRepeat] = useState(true);
   const [isShuffle, setIsShuffle] = useState(false);
-  const current = tracks.find((el) => el.id === currentId);
   const [duration, setDuration] = useState(0);
   const [progress, setProgress] = useState(0);
+
+  const current = tracks.find((el) => el.id === currentId);
 
   function getRandomTrack() {
     return tracks.at(Math.floor(Math.random() * tracks.length));
@@ -71,6 +73,7 @@ export function AudioView({
         </audio>
       )}
       <TrackList
+        current={current}
         tracks={tracks}
         onSelect={(id) => {
           setIsPlaying(true);

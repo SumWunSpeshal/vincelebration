@@ -7,48 +7,57 @@ import Layout from "@/layouts/Layout.astro";
 const tracks = [
   {
     id: crypto.randomUUID(),
+    album: "L'air du verseau",
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/01-dans-mes-bras.MP3",
     title: "Dans Mes Bras",
   },
   {
     id: crypto.randomUUID(),
+    album: "L'air du verseau",
+
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/02-cest-mon-coeur.MP3",
     title: "C'est Mon Cœur",
   },
   {
     id: crypto.randomUUID(),
+    album: "L'air du verseau",
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/03-denoncez-vous.MP3",
     title: "Dénoncez vous",
   },
   {
     id: crypto.randomUUID(),
+    album: "L'air du verseau",
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/04-courir.MP3",
     title: "Courir",
   },
   {
     id: crypto.randomUUID(),
+    album: "L'air du verseau",
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/05-voyeur-voleur.MP3",
     title: "Voyeur Voleur",
   },
   {
     id: crypto.randomUUID(),
+    album: "L'air du verseau",
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/06-vous-changer-de-vie.MP3",
     title: "Vous Changer De Vie",
   },
   {
     id: crypto.randomUUID(),
+    album: "L'air du verseau",
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/07-cest-pas-moi.MP3",
     title: "C'est Pas Moi",
   },
   {
     id: crypto.randomUUID(),
+    album: "L'air du verseau",
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/08-maladroit.MP3",
     title: "Maladroit",
@@ -57,7 +66,7 @@ const tracks = [
 ---
 
 <Layout title="Vincelebration">
-  <main class="pb-16">
+  <main class="pb-48">
     <Hero />
     <Container>
       <AudioView tracks={tracks} client:load />
