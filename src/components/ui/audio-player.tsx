@@ -1,7 +1,5 @@
-import { debounce } from "@/lib/debounce";
 import { formatDuration } from "@/lib/format-duration";
-import { throttle } from "@/lib/throttle";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { Track } from "./audio-view";
 
 export function AudioPlayer({
@@ -24,31 +22,25 @@ export function AudioPlayer({
   isRepeat: boolean;
   onRepeat: () => void;
   isShuffle: boolean;
-  duration: number | undefined;
+  duration: number;
   progress: number;
   onProgressChange: (progress: number) => void;
   onShuffle: () => void;
   onPause: () => void;
   onSkip: (dir: -1 | 1) => void;
 }) {
-  const [isChanging, setIsChanging] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragValue, setDragValue] = useState(0);
 
-  function onInput(e: React.FormEvent<HTMLInputElement>) {
-    setIsChanging(true);
+  function interactionStart() {
+    setIsDragging(true);
+    setDragValue(progress);
   }
 
-  const onChangeStart = useMemo(() => throttle(onInput, 150), []);
-
-  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (duration) {
-      onProgressChange((duration / 100) * +e.target.value);
-    }
-    setIsChanging(false);
+  function interactionEnd() {
+    setIsDragging(false);
+    onProgressChange(dragValue);
   }
-
-  const onChangeEnd = useMemo(() => debounce(onChange, 200), []);
-
-  const progressInPercent = (progress / (duration ?? Infinity)) * 100;
 
   return (
     <aside
@@ -72,16 +64,23 @@ export function AudioPlayer({
             type="range"
             name="progress"
             id="progress"
-            value={isChanging ? undefined : progressInPercent}
-            onInput={onChangeStart}
-            onChange={onChangeEnd}
+            min={0}
+            max={duration}
+            value={isDragging ? dragValue : progress}
+            onChange={(e) => setDragValue(+e.target.value)}
+            onMouseDown={interactionStart}
+            onMouseUp={interactionEnd}
+            onTouchStart={interactionStart}
+            onTouchEnd={interactionEnd}
             style={
-              { "--progress": progressInPercent + "%" } as React.CSSProperties
+              {
+                "--progress": (progress / duration) * 100 + "%",
+              } as React.CSSProperties
             }
           />
           <div className="flex justify-between text-white text-xs">
             <span>{formatDuration(progress)}</span>
-            <span>{formatDuration(duration ?? 0)}</span>
+            <span>{formatDuration(duration)}</span>
           </div>
         </div>
         <div className="flex gap-10 items-center">

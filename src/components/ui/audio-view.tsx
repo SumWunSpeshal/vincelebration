@@ -21,8 +21,8 @@ export function AudioView({
   const [isRepeat, setIsRepeat] = useState(true);
   const [isShuffle, setIsShuffle] = useState(false);
   const current = tracks.find((el) => el.id === currentId);
-  const [duration, setDuration] = useState<number | undefined>(undefined);
-  const [progress, setProgress] = useState<number>(0);
+  const [duration, setDuration] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   function skip(dir: 1 | -1) {
     const index = current ? tracks.indexOf(current) : 0;
@@ -43,9 +43,13 @@ export function AudioView({
           key={current.id}
           autoPlay={!!current.id}
           ref={audioRef}
-          onDurationChange={() => setDuration(audioRef.current?.duration)}
+          onDurationChange={() =>
+            audioRef.current && setDuration(audioRef.current.duration)
+          }
           onEnded={() => skip(1)}
-          onTimeUpdate={() => setProgress(audioRef.current?.currentTime ?? 0)}
+          onTimeUpdate={() =>
+            audioRef.current && setProgress(audioRef.current.currentTime)
+          }
         >
           <source src={current.track} type="audio/mpeg" />
           Your browser does not support the audio tag.
