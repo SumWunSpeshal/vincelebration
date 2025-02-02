@@ -44,7 +44,7 @@ export function AudioPlayer({
 
   return (
     <aside
-      className={`fixed inset-x-0 bottom-0 flex gap-6 p-4 bg-zinc-800 transition-transform translate-y-full ${!!track && "!translate-y-0"}`}
+      className={`fixed z-10 inset-x-0 bottom-0 flex gap-6 p-4 bg-zinc-800 transition-transform translate-y-full ${!!track && "!translate-y-0"}`}
     >
       <div className="size-32 rounded-lg overflow-hidden">
         {track?.cover && (
