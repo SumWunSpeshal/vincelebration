@@ -9,6 +9,10 @@ module.exports = {
       center: true,
       padding: "1rem",
     },
+    screens: {
+      xs: "425px",
+      ...defaultTheme.screens,
+    },
     extend: {
       fontFamily: {
         sans: ["Radikal", ...defaultTheme.fontFamily.sans],

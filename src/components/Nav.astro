@@ -7,12 +7,18 @@ import { Settings } from "./ui/settings";
   <a class="block size-16 lg:size-20 [&>img]:block" href="/">
     <Image src="/favicon-96x96.png" alt="Astro Logo" width={96} height={96} />
   </a>
-  <ul class="flex gap-6 font-medium">
+  <ul class="flex gap-4 sm:gap-6 font-medium text-lg xs:text-base">
     <li>
-      <a href="/musique">🎵 Musique</a>
+      <a href="/musique"
+        >🎵
+        <span class="sr-only xs:not-sr-only">Musique</span>
+      </a>
     </li>
     <li>
-      <a href="/livredor">📖 Livre d'or</a>
+      <a href="/livredor"
+        >📖
+        <span class="sr-only xs:not-sr-only">Livre d'or</span>
+      </a>
     </li>
     <li>
       <Settings client:load />

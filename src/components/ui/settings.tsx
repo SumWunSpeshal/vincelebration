@@ -46,7 +46,10 @@ export function Settings() {
 
   return (
     <Dialog>
-      <DialogTrigger className="outline-none">⚙️ Réglages</DialogTrigger>
+      <DialogTrigger className="outline-none">
+        ⚙️
+        <span className="sr-only xs:not-sr-only">Réglages</span>
+      </DialogTrigger>
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
