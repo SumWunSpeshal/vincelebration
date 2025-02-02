@@ -15,7 +15,7 @@ export function TrackList({
     <ul className="space-y-14">
       {grouped.map(([album, tracks]) => {
         return (
-          <li className="space-y-6">
+          <li className="space-y-6" key={album}>
             <h2 className="text-3xl uppercase text-gray-700">{album}</h2>
             {tracks?.[0]?.cover && (
               <div className="max-w-80 max-h-80">
