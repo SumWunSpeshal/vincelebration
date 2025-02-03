@@ -24,7 +24,7 @@ export function TrackList({
                   <span className="uppercase text-gray-600">
                     {tracks![0]?.artist}
                   </span>
-                  <small className="text-green-800">
+                  <small className="text-teal-800">
                     {tracks![0]?.release} ⸱ {tracks!.length} morceaux ⸱{" "}
                     {Math.ceil(
                       tracks!.reduce((acc, curr) => acc + curr.duration, 0) / 60
@@ -41,11 +41,12 @@ export function TrackList({
                   <img
                     src={tracks![0]?.cover}
                     alt={album + " Cover"}
-                    className="size-full object-contain rounded-md shadow-xl"
+                    className="size-full object-contain rounded-md shadow-lg max-md:!transform-none"
                     style={
                       {
                         "-webkit-box-reflect":
-                          "below 1rem linear-gradient(to bottom, rgba(0,0,0,0.0) 40%, rgba(0,0,0,0.1))",
+                          "below .5rem linear-gradient(to bottom, rgba(0,0,0,0.0) 40%, rgba(0,0,0,0.1))",
+                        transform: "perspective(600px) rotateY(10deg)",
                       } as React.CSSProperties
                     }
                   />
@@ -59,10 +60,10 @@ export function TrackList({
                   <button
                     type="button"
                     onClick={() => onSelect(id)}
-                    className={`text-lg flex items-center hover:bg-green-100 rounded-sm px-4 py-2 w-full transition-colors ${current?.id === id && "!bg-green-600 relative"}`}
+                    className={`text-lg flex items-center hover:bg-teal-100 rounded-sm px-4 py-2 w-full transition-colors ${current?.id === id && "!bg-teal-600 relative"}`}
                   >
                     <div
-                      className={`w-8 text-left font-mono text-green-800 font-medium transition-colors ${current?.id === id && "!text-white"}`}
+                      className={`w-8 text-left font-mono text-teal-800 font-medium transition-colors ${current?.id === id && "!text-white"}`}
                     >
                       {current?.id === id ? "▶" : `${i + 1}`.padStart(2, "0")}
                     </div>
@@ -72,7 +73,7 @@ export function TrackList({
                       {title}
                     </span>
                     <span
-                      className={`text-sm text-green-800 font-medium ml-auto transition-colors ${current?.id === id && "!text-white"}`}
+                      className={`text-sm text-teal-800 font-medium ml-auto transition-colors ${current?.id === id && "!text-white"}`}
                     >
                       {formatDuration(duration)}
                     </span>
