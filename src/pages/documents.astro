@@ -3,8 +3,9 @@ import Container from "@/components/Container.astro";
 import Headline from "@/components/Headline.astro";
 import Hero from "@/components/Hero.astro";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import WidgetLoader from "@/components/WidgetLoader.astro";
 import Layout from "@/layouts/Layout.astro";
 import { getDocs } from "../clients/cached-requests";
 
@@ -66,6 +67,24 @@ const FILE_TYPE_EMOJIS: Record<string, string> = {
     <Container>
       <div class="mb-8">
         <Headline>Documents</Headline>
+      </div>
+      <div class="mb-16">
+        <p class="mb-4">
+          Les documents ajoutés sur cette page n'apparaissent pas dans la
+          galerie de la page d'accueil. Vous pouvez ajouter n'importe quel type
+          de fichier ici.
+        </p>
+        <WidgetLoader
+          uploadPreset="vincelebration-docs-user-upload"
+          id="upload-docs-events"
+        >
+          <Button>
+            <div class="flex">
+              <img class="w-4" src="/upload.svg" alt="upload icon" />
+              <span class="pl-3">Upload</span>
+            </div>
+          </Button>
+        </WidgetLoader>
       </div>
       <div class="grid gap-4">
         {
