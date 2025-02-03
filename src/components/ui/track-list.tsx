@@ -44,7 +44,7 @@ export function TrackList({
                     className="size-full object-contain rounded-md shadow-lg max-md:!transform-none"
                     style={
                       {
-                        "-webkit-box-reflect":
+                        WebkitBoxReflect:
                           "below .5rem linear-gradient(to bottom, rgba(0,0,0,0.0) 40%, rgba(0,0,0,0.1))",
                         transform: "perspective(600px) rotateY(10deg)",
                       } as React.CSSProperties

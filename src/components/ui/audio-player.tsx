@@ -74,7 +74,8 @@ export function AudioPlayer({
             onTouchEnd={interactionEnd}
             style={
               {
-                "--progress": (progress / duration) * 100 + "%",
+                "--progress":
+                  ((isDragging ? dragValue : progress) / duration) * 100 + "%",
               } as React.CSSProperties
             }
           />
