@@ -22,3 +22,12 @@ export async function getImages() {
       .execute();
   });
 }
+
+export async function getDocs(): Promise<CloudinaryResponse> {
+  return await cloudinary.search
+    .expression('folder="documents"')
+    .sort_by("uploaded_at", "desc")
+    .with_field("context")
+    .max_results(100)
+    .execute();
+}

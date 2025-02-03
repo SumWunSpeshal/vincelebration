@@ -11,6 +11,7 @@ import { Image } from "astro:assets";
 import { cloudinary } from "@/clients/cloudinary";
 import WidgetLoader from "@/components/WidgetLoader.astro";
 import { ImageGrid } from "@/components/ui/image-grid";
+import FixedNav from "@/components/FixedNav.astro";
 
 export const prerender = false;
 
@@ -79,4 +80,5 @@ const assets = await getImages();
       </div>
     </Container>
   </main>
+  <FixedNav />
 </Layout>

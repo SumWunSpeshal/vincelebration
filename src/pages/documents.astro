@@ -1,0 +1,110 @@
+---
+import Container from "@/components/Container.astro";
+import Headline from "@/components/Headline.astro";
+import Hero from "@/components/Hero.astro";
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import Layout from "@/layouts/Layout.astro";
+import { getDocs } from "../clients/cached-requests";
+
+export const prerender = false;
+
+const assets = await getDocs();
+
+const FILE_TYPE_EMOJIS: Record<string, string> = {
+  // Documents
+  txt: "📄",
+  doc: "📝",
+  docx: "📝",
+  pdf: "📋",
+  rtf: "📄",
+
+  // Images
+  jpg: "🖼️",
+  jpeg: "🖼️",
+  png: "🖼️",
+  gif: "🎬",
+  bmp: "🖼️",
+  webp: "🖼️",
+  svg: "🖌️",
+
+  // Audio
+  mp3: "🎵",
+  wav: "🎵",
+  flac: "🎵",
+  aac: "🎵",
+
+  // Video
+  mp4: "🎥",
+  avi: "🎬",
+  mov: "🎥",
+  mkv: "🎬",
+
+  // Code
+  js: "💻",
+  py: "🐍",
+  html: "🌐",
+  css: "🎨",
+  json: "📊",
+
+  // Compressed
+  zip: "🗄️",
+  rar: "🗄️",
+  gz: "🗄️",
+  tar: "🗄️",
+
+  // Other
+  exe: "⚙️",
+  csv: "📊",
+};
+---
+
+<Layout title="Vincelebration">
+  <main>
+    <Hero />
+    <Container>
+      <div class="mb-8">
+        <Headline>Documents</Headline>
+      </div>
+      <div class="grid gap-4">
+        {
+          assets.resources.map(({ secure_url, format, display_name }, i) => (
+            <Fragment>
+              {i !== 0 && <Separator />}
+              <div class="flex flex-wrap gap-4 sm:items-center flex-col sm:flex-row">
+                <div class="flex gap-2 mr-auto items-center">
+                  <span>{display_name}</span>
+                  <Badge variant="outline">
+                    <span class="font-normal">
+                      {FILE_TYPE_EMOJIS[format] ?? "❓"} {format}
+                    </span>
+                  </Badge>
+                </div>
+                <div class="shrink-0 flex gap-2">
+                  <a
+                    href={secure_url}
+                    target="_blank"
+                    class={buttonVariants({ variant: "outline" })}
+                  >
+                    <img class="w-6" src="/eye.svg" alt="eye icon" />
+                    <span class="sr-only">Regarder</span>
+                  </a>
+                  <a
+                    href={secure_url}
+                    download="filename"
+                    target="_blank"
+                    class={buttonVariants()}
+                  >
+                    <img class="w-5" src="/download.svg" alt="download icon" />
+                    <span>Télécharger</span>
+                  </a>
+                </div>
+              </div>
+            </Fragment>
+          ))
+        }
+      </div>
+    </Container>
+  </main>
+</Layout>

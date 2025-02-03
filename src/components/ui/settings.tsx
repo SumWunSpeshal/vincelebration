@@ -46,7 +46,7 @@ export function Settings() {
 
   return (
     <Dialog>
-      <DialogTrigger className="outline-none">
+      <DialogTrigger className="outline-none block whitespace-nowrap overflow-hidden xs:w-16 sm:w-auto text-ellipsis">
         ⚙️
         <span className="sr-only xs:not-sr-only">Réglages</span>
       </DialogTrigger>

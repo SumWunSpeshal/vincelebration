@@ -3,21 +3,33 @@ import { Image } from "astro:assets";
 import { Settings } from "./ui/settings";
 ---
 
-<nav class="h-20 lg:h-28 flex items-center px-4 lg:px-8 justify-between">
-  <a class="block size-16 lg:size-20 [&>img]:block" href="/">
+<nav class="h-20 lg:h-28 flex items-center gap-4 px-4 lg:px-8 justify-between">
+  <a class="block size-16 lg:size-20 [&>img]:block shrink-0" href="/">
     <Image src="/favicon-96x96.png" alt="Astro Logo" width={96} height={96} />
   </a>
   <ul class="flex gap-4 sm:gap-6 font-medium text-lg xs:text-base">
     <li>
-      <a href="/musique"
+      <a
+        class="block whitespace-nowrap overflow-hidden xs:w-16 sm:w-auto text-ellipsis"
+        href="/documents"
+        >📄
+        <span class="sr-only xs:not-sr-only">Documents</span>
+      </a>
+    </li>
+    <li>
+      <a
+        class="block whitespace-nowrap overflow-hidden xs:w-16 sm:w-auto text-ellipsis"
+        href="/musique"
         >🎵
         <span class="sr-only xs:not-sr-only">Musique</span>
       </a>
     </li>
     <li>
-      <a href="/livredor"
+      <a
+        class="block whitespace-nowrap overflow-hidden xs:w-16 sm:w-auto text-ellipsis"
+        href="/livredor"
         >📖
-        <span class="sr-only xs:not-sr-only">Livre d'or</span>
+        <span class="sr-only xs:not-sr-only">Livre&nbsp;d'or</span>
       </a>
     </li>
     <li>
