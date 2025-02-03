@@ -19,7 +19,7 @@ export function TrackList({
         return (
           <li key={album}>
             <div className="mb-12 flex flex-col gap-6 md:gap-10 md:flex-row-reverse md:items-end">
-              <div className="md:grow grid gap-4">
+              <div className="md:grow flex flex-col-reverse md:flex-col gap-4">
                 <div className="grid gap-0.5">
                   <span className="uppercase text-gray-600">
                     {tracks![0]?.artist}
