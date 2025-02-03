@@ -44,9 +44,9 @@ export function AudioPlayer({
 
   return (
     <aside
-      className={`fixed z-10 inset-x-0 bottom-0 flex gap-6 p-4 bg-zinc-800 transition-transform translate-y-full ${!!track && "!translate-y-0"}`}
+      className={`fixed z-10 inset-x-0 bottom-0 flex items-start gap-6 p-4 bg-zinc-800 transition-transform translate-y-full ${!!track && "!translate-y-0"}`}
     >
-      <div className="size-32 rounded-lg overflow-hidden">
+      <div className="max-h-32 aspect-square rounded-lg overflow-hidden">
         {track?.cover && (
           <img
             className="object-contain size-full pointer-events-none select-none"
@@ -55,7 +55,7 @@ export function AudioPlayer({
           />
         )}
       </div>
-      <div className="space-y-1">
+      <div className="space-y-1 mx-auto">
         <span className="font-medium text-white select-none">
           {track?.title}
         </span>

@@ -73,7 +73,7 @@ export function TrackList({
                       {title}
                     </span>
                     <span
-                      className={`text-sm text-teal-800 font-medium ml-auto transition-colors ${current?.id === id && "!text-white"}`}
+                      className={`text-sm text-teal-800 font-mono font-medium ml-auto transition-colors ${current?.id === id && "!text-white"}`}
                     >
                       {formatDuration(duration)}
                     </span>
