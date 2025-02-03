@@ -1,3 +1,5 @@
+import { formatDuration } from "@/lib/format-duration";
+import type React from "react";
 import type { Track } from "./audio-view";
 
 export function TrackList({
@@ -12,32 +14,68 @@ export function TrackList({
   const grouped = Object.entries(Object.groupBy(tracks, (el) => el.album));
 
   return (
-    <ul className="space-y-14">
+    <ul className="space-y-20">
       {grouped.map(([album, tracks]) => {
         return (
-          <li className="space-y-6" key={album}>
-            <h2 className="text-3xl uppercase text-gray-700">{album}</h2>
-            {tracks?.[0]?.cover && (
-              <div className="max-w-80 max-h-80">
-                <img
-                  src={tracks![0]?.cover}
-                  alt={album + " Cover"}
-                  className="size-full object-contain"
-                />
+          <li key={album}>
+            <div className="mb-12 flex flex-col gap-6 md:gap-10 md:flex-row-reverse md:items-end">
+              <div className="md:grow grid gap-4">
+                <div className="grid gap-0.5">
+                  <span className="uppercase text-gray-600">
+                    {tracks![0]?.artist}
+                  </span>
+                  <small className="text-green-800">
+                    {tracks![0]?.release} ⸱ {tracks!.length} morceaux ⸱{" "}
+                    {Math.ceil(
+                      tracks!.reduce((acc, curr) => acc + curr.duration, 0) / 60
+                    )}{" "}
+                    min
+                  </small>
+                </div>
+
+                <h2 className="text-5xl text-gray-700 font-medium">{album}</h2>
               </div>
-            )}
+
+              {tracks?.[0]?.cover && (
+                <div className="max-w-80 max-h-80">
+                  <img
+                    src={tracks![0]?.cover}
+                    alt={album + " Cover"}
+                    className="size-full object-contain rounded-md shadow-xl"
+                    style={
+                      {
+                        "-webkit-box-reflect":
+                          "below 1rem linear-gradient(to bottom, rgba(0,0,0,0.0) 40%, rgba(0,0,0,0.1))",
+                      } as React.CSSProperties
+                    }
+                  />
+                </div>
+              )}
+            </div>
+
             <ul className="space-y-1">
-              {tracks?.map(({ title, id }, i) => (
+              {tracks?.map(({ title, id, duration }, i) => (
                 <li key={title}>
                   <button
                     type="button"
                     onClick={() => onSelect(id)}
-                    className={`text-lg flex hover:bg-green-50 rounded-sm px-2 py-2 w-full transition-colors ${current?.id === id && "!bg-green-200"}`}
+                    className={`text-lg flex items-center hover:bg-green-100 rounded-sm px-4 py-2 w-full transition-colors ${current?.id === id && "!bg-green-600 relative"}`}
                   >
-                    <div className="w-12 font-mono text-green-800 font-medium">
+                    <div
+                      className={`w-8 text-left font-mono text-green-800 font-medium transition-colors ${current?.id === id && "!text-white"}`}
+                    >
                       {current?.id === id ? "▶" : `${i + 1}`.padStart(2, "0")}
                     </div>
-                    <span className="text-gray-700">{title}</span>
+                    <span
+                      className={`text-gray-800 transition-colors ${current?.id === id && "!text-white"}`}
+                    >
+                      {title}
+                    </span>
+                    <span
+                      className={`text-sm text-green-800 font-medium ml-auto transition-colors ${current?.id === id && "!text-white"}`}
+                    >
+                      {formatDuration(duration)}
+                    </span>
                   </button>
                 </li>
               ))}

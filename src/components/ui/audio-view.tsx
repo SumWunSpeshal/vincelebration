@@ -5,9 +5,12 @@ import { TrackList } from "./track-list";
 export type Track = {
   id: string;
   album: string;
+  artist: string;
+  release: string;
   cover: string;
   track: string;
   title: string;
+  duration: number;
 };
 
 export function AudioView({

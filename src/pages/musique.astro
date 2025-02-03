@@ -13,6 +13,7 @@ const tracks = [
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/01-dans-mes-bras.MP3",
     title: "Dans Mes Bras",
+    duration: 4 * 60 + 12,
   },
   {
     id: crypto.randomUUID(),
@@ -22,6 +23,7 @@ const tracks = [
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/02-cest-mon-coeur.MP3",
     title: "C'est Mon Cœur",
+    duration: 3 * 60 + 58,
   },
   {
     id: crypto.randomUUID(),
@@ -31,6 +33,7 @@ const tracks = [
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/03-denoncez-vous.MP3",
     title: "Dénoncez Vous",
+    duration: 4 * 60 + 6,
   },
   {
     id: crypto.randomUUID(),
@@ -40,6 +43,7 @@ const tracks = [
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/04-courir.MP3",
     title: "Courir",
+    duration: 2 * 60 + 45,
   },
   {
     id: crypto.randomUUID(),
@@ -49,6 +53,7 @@ const tracks = [
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/05-voyeur-voleur.MP3",
     title: "Voyeur Voleur",
+    duration: 3 * 60 + 23,
   },
   {
     id: crypto.randomUUID(),
@@ -58,6 +63,7 @@ const tracks = [
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/06-vous-changer-de-vie.MP3",
     title: "Vous Changer De Vie",
+    duration: 4 * 60 + 16,
   },
   {
     id: crypto.randomUUID(),
@@ -67,6 +73,7 @@ const tracks = [
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/07-cest-pas-moi.MP3",
     title: "C'est Pas Moi",
+    duration: 5 * 60 + 3,
   },
   {
     id: crypto.randomUUID(),
@@ -76,6 +83,7 @@ const tracks = [
     cover: "lairduverseau.png",
     track: "/musique/lairduverseau/08-maladroit.MP3",
     title: "Maladroit",
+    duration: 4 * 60 + 0,
   },
   {
     id: crypto.randomUUID(),
@@ -85,6 +93,7 @@ const tracks = [
     cover: "petit-velo.jpg",
     track: "/musique/petit-velo/01-petit-velo.mp3",
     title: "Petit vélo",
+    duration: 2 * 60 + 53,
   },
   {
     id: crypto.randomUUID(),
@@ -94,6 +103,7 @@ const tracks = [
     cover: "petit-velo.jpg",
     track: "/musique/petit-velo/02-le-mercredi-et-le-dimache.mp3",
     title: "Le mercredi et le dimanche",
+    duration: 2 * 60 + 49,
   },
   {
     id: crypto.randomUUID(),
@@ -103,6 +113,7 @@ const tracks = [
     cover: "essones-five2_compressed.png",
     track: "/musique/les-essones-five/03-ecoutez-la-musique.mp3",
     title: "Écoutez la musique",
+    duration: 2 * 60 + 30,
   },
   {
     id: crypto.randomUUID(),
@@ -112,6 +123,7 @@ const tracks = [
     cover: "essones-five2_compressed.png",
     track: "/musique/les-essones-five/04-le-soleil-a-pleines-dents.mp3",
     title: "Le soleil à pleines dents",
+    duration: 3 * 60 + 26,
   },
   {
     id: crypto.randomUUID(),
@@ -121,6 +133,7 @@ const tracks = [
     cover: "essones-five.jpg",
     track: "/musique/les-essones-five/01-les-baladins.mp3",
     title: "Les baladins",
+    duration: 3 * 60 + 24,
   },
   {
     id: crypto.randomUUID(),
@@ -130,6 +143,7 @@ const tracks = [
     cover: "essones-five.jpg",
     track: "/musique/les-essones-five/02-cauchemard.mp3",
     title: "Cauchemard",
+    duration: 2 * 60 + 36,
   },
   {
     id: crypto.randomUUID(),
@@ -139,6 +153,7 @@ const tracks = [
     cover: "painbeurreetconfiture.jpg",
     track: "/musique/pbec/01-cest-la-rentree.mp3",
     title: "C'est la rentrée",
+    duration: 2 * 60 + 38,
   },
   {
     id: crypto.randomUUID(),
@@ -148,12 +163,13 @@ const tracks = [
     cover: "painbeurreetconfiture.jpg",
     track: "/musique/pbec/02-les-enfants-sages.mp3",
     title: "Les enfants sages",
+    duration: 3 * 60 + 32,
   },
 ] as const;
 ---
 
 <Layout title="Vincelebration">
-  <main class="pb-48">
+  <main class="pb-56">
     <Hero />
     <Container>
       <AudioView tracks={tracks} client:load />
