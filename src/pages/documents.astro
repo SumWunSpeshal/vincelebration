@@ -109,7 +109,12 @@ const FILE_TYPE_EMOJIS: Record<string, string> = {
                     <img class="w-6" src="/eye.svg" alt="eye icon" />
                     <span class="sr-only">Regarder</span>
                   </a>
-                  <a href={secure_url} download class={buttonVariants()}>
+                  <a
+                    href={secure_url}
+                    download
+                    target="_blank"
+                    class={buttonVariants()}
+                  >
                     <img class="w-5" src="/download.svg" alt="download icon" />
                     <span>Télécharger</span>
                   </a>
