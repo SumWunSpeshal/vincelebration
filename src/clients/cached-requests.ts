@@ -18,7 +18,7 @@ export async function getImages() {
     return await cloudinary.search
       .expression('(resource_type:image OR resource_type:video) AND folder=""')
       .with_field("context")
-      .max_results(100)
+      .max_results(150)
       .execute();
   });
 }
@@ -28,6 +28,6 @@ export async function getDocs(): Promise<CloudinaryResponse> {
     .expression('folder="documents"')
     .sort_by("uploaded_at", "desc")
     .with_field("context")
-    .max_results(100)
+    .max_results(150)
     .execute();
 }
