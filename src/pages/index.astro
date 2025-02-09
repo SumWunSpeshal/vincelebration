@@ -58,8 +58,8 @@ const assets = await getImages();
                   {resource_type === "image" ? (
                     <CldImage
                       src={public_id}
-                      width={width}
-                      height={height}
+                      width={240}
+                      height={240}
                       alt={display_name}
                       sizes="100vw"
                       transition:name={public_id}
@@ -67,8 +67,8 @@ const assets = await getImages();
                   ) : (
                     <Image
                       src={cloudinary.utils.video_thumbnail_url(public_id)}
-                      width={width}
-                      height={height}
+                      width={240}
+                      height={240}
                       alt={display_name}
                     />
                   )}
