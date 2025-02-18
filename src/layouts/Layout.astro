@@ -1,5 +1,6 @@
 ---
 import { AtTop } from "@/components/ui/at-top";
+import { SyncLocalStorageToCookie } from "@/components/ui/sync-localstorage-to-cookie";
 import "@/styles/globals.css";
 import { ClientRouter } from "astro:transitions";
 import Nav from "../components/Nav.astro";
@@ -28,6 +29,7 @@ const { title } = Astro.props as Props;
     <ClientRouter />
   </head>
   <body class="group overflow-x-hidden">
+    <SyncLocalStorageToCookie client:only />
     <AtTop client:load />
     <Nav />
     <slot />

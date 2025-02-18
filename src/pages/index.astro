@@ -12,8 +12,11 @@ import { cloudinary } from "@/clients/cloudinary";
 import WidgetLoader from "@/components/WidgetLoader.astro";
 import { ImageGrid } from "@/components/ui/image-grid";
 import FixedNav from "@/components/FixedNav.astro";
+import { hideForUsername } from "@/lib/hide-for-username";
 
 export const prerender = false;
+
+const usernameCookie = Astro.cookies.get("username");
 
 const assets = await getImages();
 ---
@@ -48,33 +51,35 @@ const assets = await getImages();
       <div class="pb-16">
         <ImageGrid client:only>
           {
-            assets.resources.map(
-              ({ width, height, public_id, display_name, resource_type }) => (
-                <ImageFrame
-                  wide={width / height > 1.6}
-                  href={`/single/${public_id}`}
-                  isVideo={resource_type === "video"}
-                >
-                  {resource_type === "image" ? (
-                    <CldImage
-                      src={public_id}
-                      width={240}
-                      height={240}
-                      alt={display_name}
-                      sizes="100vw"
-                      transition:name={public_id}
-                    />
-                  ) : (
-                    <Image
-                      src={cloudinary.utils.video_thumbnail_url(public_id)}
-                      width={240}
-                      height={240}
-                      alt={display_name}
-                    />
-                  )}
-                </ImageFrame>
+            assets.resources
+              .filter(hideForUsername(usernameCookie))
+              .map(
+                ({ width, height, public_id, display_name, resource_type }) => (
+                  <ImageFrame
+                    wide={width / height > 1.6}
+                    href={`/single/${public_id}`}
+                    isVideo={resource_type === "video"}
+                  >
+                    {resource_type === "image" ? (
+                      <CldImage
+                        src={public_id}
+                        width={240}
+                        height={240}
+                        alt={display_name}
+                        sizes="100vw"
+                        transition:name={public_id}
+                      />
+                    ) : (
+                      <Image
+                        src={cloudinary.utils.video_thumbnail_url(public_id)}
+                        width={240}
+                        height={240}
+                        alt={display_name}
+                      />
+                    )}
+                  </ImageFrame>
+                )
               )
-            )
           }
         </ImageGrid>
       </div>

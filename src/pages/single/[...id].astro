@@ -8,10 +8,13 @@ import { CldImage } from "astro-cloudinary";
 import { Comment, db, eq } from "astro:db";
 import { getImages } from "../../clients/cached-requests";
 import Layout from "../../layouts/Layout.astro";
+import { hideForUsername } from "@/lib/hide-for-username";
 
 export const prerender = false;
 
 const { id } = Astro.params;
+
+const usernameCookie = Astro.cookies.get("username");
 
 const comments = await db
   .select()
@@ -19,10 +22,11 @@ const comments = await db
   .where(eq(Comment.postId, id ?? ""));
 
 const assets = await getImages();
-const currIndex = assets.resources.findIndex((el) => el.public_id === id);
-const item = assets.resources[currIndex];
-const prev = assets.resources[currIndex - 1];
-const next = assets.resources[currIndex + 1];
+const filtered = assets.resources.filter(hideForUsername(usernameCookie));
+const currIndex = filtered.findIndex((el) => el.public_id === id);
+const item = filtered[currIndex];
+const prev = filtered[currIndex - 1];
+const next = filtered[currIndex + 1];
 ---
 
 <Layout title="Vincelebration">
@@ -76,7 +80,7 @@ const next = assets.resources[currIndex + 1];
             class="absolute text-black left-1/2 -translate-x-1/2 bottom-3 text-sm bg-white/60 rounded-md px-2 py-0.5 font-medium"
             transition:name={id + "count"}
           >
-            {currIndex + 1} / {assets.resources.length}
+            {currIndex + 1} / {filtered.length}
           </small>
         </div>
       ) : (
