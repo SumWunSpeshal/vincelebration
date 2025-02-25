@@ -18,7 +18,7 @@ export async function getImages() {
     return await cloudinary.search
       .expression('(resource_type:image OR resource_type:video) AND folder=""')
       .with_field("context")
-      .max_results(150)
+      .max_results(200)
       .execute();
   });
 }
